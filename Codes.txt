@@ -1,0 +1,52 @@
+CREATE TABLE owner (
+	owner_id	serial PRIMARY KEY,
+	name 		text,
+	nationality	text,
+	email		text,
+	phone 		text
+);
+
+CREATE TABLE city (
+	city_id serial PRIMARY KEY,
+	city_name text,
+	country text,
+	number_of_properties number
+);
+
+CREATE TABLE property (
+	property_id serial PRIMARY KEY,
+	property_type text,
+	owner_id serial references owner(owner_id),
+	city_id serial references city(city_id)
+);	
+	
+CREATE TABLE hotel(
+	hotel_id serial PRIMARY KEY,
+	property_id serial references property(property_id),
+	hotel_name text,
+	descriptio text,
+	rating integer CHECK( rating >= 0 and rating <= 5)
+);
+
+
+CREATE TABLE rooms (
+	room_id serial PRIMARY KEY,
+	hotel_id serial references hotel(hotel_id),
+	room_type text,
+	price integer CHECK (price >= 0),
+	facilities text,
+	reservation_id serial references reservations(reservation_id),
+	capacity integer CHECK (capacity >=0)
+);
+
+
+
+
+CREATE TABLE reservations (
+	reservation_id serial PRIMARY KEY,
+	hotel_id serial references hotel(hotel_id),
+	checkin_date date,
+	checkout_date date,
+	client_id serial references client(client_id),
+	price integer CHECK (price>=0)
+);
