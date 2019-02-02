@@ -10,22 +10,24 @@ CREATE TABLE city (
 	city_id serial PRIMARY KEY,
 	city_name text NOT NULL UNIQUE,
 	country text NOT NULL,
-	number_of_properties number
+	number_of_properties INTEGER
 );
 
 CREATE TABLE property (
 	property_id serial PRIMARY KEY,
-	property_type text NOT NULL,
+	property_type text NOT NULL CHECK ( property_type = 'hotel' or property_type ='car' ),
 	owner_id serial references owner(owner_id),
 	city_id serial references city(city_id)
 );	
+
+
 	
 CREATE TABLE hotel(
 	hotel_id serial PRIMARY KEY,
 	property_id serial references property(property_id),
 	hotel_name text NOT NULL,
 	description text,
-	rating integer CHECK( rating >= 0 and rating <= 5) 
+	rating numberic CHECK( rating >= 0 and rating <= 5) 
 );
 
 
@@ -50,3 +52,104 @@ CREATE TABLE reservations (
 	client_id serial references client(client_id),
 	price integer CHECK (price>=0)
 );
+
+
+CREATE OR REPLACE FUNCTION GET_CITY_ID(C_NAME TEXT)
+RETURNS INTEGER AS $$
+DECLARE
+	C_ID INTEGER;
+BEGIN
+	SELECT city_id INTO C_ID
+	FROM CITY
+	WHERE C_NAME = city_name;
+	RETURN C_ID;
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN 
+		RETURN 'NO CITY FOUND';
+	WHEN OTHERS THEN
+		RETURN 'OTHERS EXCEPTION IN FUNCTION GET_CITY_ID';
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+INSERT INTO city (city_name , country) VALUES('Dhaka' , 'Bangladesh');
+INSERT INTO city (city_name , country) VALUES('New York' , 'USA');
+INSERT INTO city (city_name , country) VALUES('Delhi' , 'India');
+INSERT INTO city (city_name , country) VALUES('Delhi' , 'India');
+	
+
+
+insert into owner(name , nationality , email , phone) VALUES('Mr. Rahim' , 'Bangladeshi' , 'rahim@gmail.com' , '01712345678');
+insert into owner(name , nationality , email , phone) VALUES('Mr. karim' , 'Indian' , 'kaim@gmail.com' , '01712345567');
+insert into owner(name , nationality , email , phone) VALUES('Edward' , 'American' , 'edward@gmail.com' , '01332345567');
+
+
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 3 , 3);
+insert into property(property_type , owner_id , city_id) VALUES('car' , 3 , 3);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 ,2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 , 4);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 , 2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 , 2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 , 2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 2 , 2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 2);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
+insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
+
+
+insert into hotel(property_id , hotel_name ) values(1 , 'Hotel Carnival');
+insert into hotel(property_id , hotel_name ) values(3 , 'Urban Hotel');
+insert into hotel(property_id , hotel_name ) values(4 , 'Shornali Garden');
+insert into hotel(property_id , hotel_name ) values(6 , 'Heaven Villa');
+insert into hotel(property_id , hotel_name ) values(8 , 'Heaven Village');
+insert into hotel(property_id , hotel_name ) values(9 , 'Tour Heaven');
+insert into hotel(property_id , hotel_name ) values(10 , 'Tropical Heven');
+insert into hotel(property_id , hotel_name ) values(11 , 'Hotel Journal');
+insert into hotel(property_id , hotel_name ) values(12 , 'Tour de cyclist');
+insert into hotel(property_id , hotel_name ) values(13 , 'Padison');
+insert into hotel(property_id , hotel_name ) values(14 , 'Water Red');
+insert into hotel(property_id , hotel_name ) values(15 , 'HouseWood');
+insert into hotel(property_id , hotel_name ) values(16 , 'La La Island');
+insert into hotel(property_id , hotel_name ) values(17 , 'SWH Villa');
+insert into hotel(property_id , hotel_name ) values(18 , 'Road Run');
+insert into hotel(property_id , hotel_name ) values(19 , 'Food Village');
+
+
+
+
+
+CREATE OR REPLACE FUNCTION hotel_search(city_name text)
+RETURNS TABLE(
+	HOTEL_NAME TEXT,
+	RATING NUMERIC
+) AS $$
+DECLARE
+	C_ID INTEGER;
+BEGIN
+	C_ID = get_city_id(city_name);
+	RETURN QUERY 
+	SELECT h.hotel_name , h.rating
+	FROM property p 
+	JOIN hotel h
+	ON(p.city_id = c_id AND h.property_id = p.property_id )
+	ORDER BY h.rating desc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+update  hotel 
+set rating = random()*5 + 1;
+
+
+
+update  hotel 
+set rating = round(	rating  , 2);
+
+
+
+select * from hotel_search('Dhaka');
