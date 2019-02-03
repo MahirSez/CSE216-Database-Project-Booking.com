@@ -195,3 +195,49 @@ CREATE TABLE driver_rating_description (
 	rating numeric CHECK( rating>= 0 and rating <=5),
 	description text
 );
+
+CREATE TABLE HOTEL_REVIEW(
+	REVIEW_ID   SERIAL PRIMARY KEY,
+	HOTEL_ID    SERIAL REFERENCES HOTEL(HOTEL_ID),
+	CLIENT_ID   SERIAL REFERENCES CLIENT(CLIENT_ID),
+	REVIEW_DATE DATE,
+	RATING INTEGER CHECK (RATING >= 0 AND RATING <= 5),
+	DESCRIPTION VARCHAR
+);
+
+CREATE TABLE reservation_history (
+	roomID INT NOT NULL,
+	hotel_id NOT NULL,
+	client_id NOT NULL,
+	check_in_date date NOT NULL,
+	check_out_date NOT NULL,
+	price INT NOT NULL,
+	history_id serial PRIMARY KEY
+)
+
+CREATE TABLE reservation_history (
+	roomID INT NOT NULL,
+	hotel_id int NOT NULL,
+	client_id int NOT NULL,
+	check_in_date date NOT NULL,
+	check_out_date date NOT NULL,
+	price INT NOT NULL,
+	history_id serial PRIMARY KEY
+)
+
+CREATE OR REPLACE FUNCTION email_safe_to_register(c_email TEXT)
+RETURNS bool AS $$
+DECLARE
+	c_id int;
+BEGIN
+	c_id = -1;
+	SELECT client_id INTO c_id
+	FROM client
+	WHERE c_email = email;
+
+	if c_id is null then
+		return true;
+	else return false;
+	end if;
+END;
+$$ LANGUAGE PLpgSQL;
