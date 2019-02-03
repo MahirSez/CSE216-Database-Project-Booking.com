@@ -2,7 +2,8 @@ CREATE TABLE owner (
 	owner_id	serial PRIMARY KEY,
 	name 		text NOT NULL,
 	nationality	text NOT NULL,
-	email		text,
+	email		text NOT NULL,
+	password	text NOT NULL
 	phone 		text
 );
 
@@ -153,3 +154,44 @@ set rating = round(	rating  , 2);
 
 
 select * from hotel_search('Dhaka');
+
+
+
+
+
+create table car (
+	car_id serial PRIMARY KEY,
+	property_id serial references property(property_id),
+	description text
+);
+
+
+create table driver (
+	driver_id serial PRIMARY KEY,
+	driver_name text NOT NULL,
+	mobile_number text NOT NULL,
+	rating numeric check( rating >=0 and rating <= 5)
+);
+
+CREATE TABLE car_driver_relation (
+	car_id serial references car(car_id) ,
+	driver_id serial references driver(driver_id),
+	date_of_booking date
+);
+
+CREATE TABLE car_request (
+	car_id serial references car(car_id),
+	client_id serial references client(client_id),
+	hire_date date NOT NULL,
+	destination text NOT NULL,
+	pickup_location text NOT NULL,
+	price INT NOT NULL
+);
+
+CREATE TABLE driver_rating_description (
+	driver_id serial references driver(driver_id),
+	client_id serial references client(client_id),
+	rating_date date NOT NULL,
+	rating numeric CHECK( rating>= 0 and rating <=5),
+	description text
+);
