@@ -88,6 +88,60 @@ END;
 $$ LANGUAGE PLpgSQL;
 
 
+---RETURNS 
+
+CREATE TABLE ROOM_RESERVE
+(
+	ROOM_ID INTEGER REFERENCES ROOMS(ROOM_ID),
+	RESERVATION_ID INTEGER REFERENCES RESERVATIONS(RESERVATION_ID)
+);
+
+
+INSERT INTO public.reservations(
+            reservation_id, hotel_id, checkin_date, checkout_date, client_id, 
+            price)
+    VALUES (DEFAULT, 23, '2018-07-15','2018-07-29', 2, 
+            100);
+
+
 ---RETURNS NUBMERS OF ROOMS OF EACH TYPE FROM A HOTEL 
 
-CREATE OR REPLACE FUNCTION GET_
+
+ALTER TABLE RESERVATIONS
+ADD COLUMN ROOM_TYPE TEXT, 
+ADD COLUMN QUANTITY INTEGER;
+
+CREATE OR REPLACE FUNCTION GET_ALL_ROOMS_OF_HOTEL(H_ID INTEGER,check_in Date,check_out Date)	
+RETURNS TABLE(
+     Q_ROOM_TYPE TEXT,
+     AVAILABLE_QUANTITY INTEGER
+     ) AS $$
+
+DECLARE 
+
+BEGIN 
+	RETURN QUERY 
+	
+	select R.room_type, cast ( count(*) AS INTEGER ) 
+	from rooms R 
+	where 0 = 
+ 	(select count(*)
+		from ROOM_RESERVE RR join RESERVATIONS res 
+		ON (RR.RESERVATION_ID = res.RESERVATION_ID)
+		where (RR.ROOM_ID = R.room_ID) and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) )
+	)
+	group by R.room_type;
+ 	
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+---
+INSERT INTO public.rooms(
+            room_id, hotel_id, room_type, price, facilities, capacity)
+    VALUES (default, 26, 'double', 2000, ' ', 2);
+
+---
+insert into room_reserve(reservation_id,room_id) values(1,2);
