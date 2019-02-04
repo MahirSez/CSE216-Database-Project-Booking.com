@@ -25,8 +25,7 @@ CREATE TABLE property (
 	
 CREATE TABLE hotel(
 	hotel_id serial PRIMARY KEY,
-	property_id serial references property(property_id),
-	hotel_name text NOT NULL,
+	hotel_name text ,
 	description text,
 	rating numberic CHECK( rating >= 0 and rating <= 5) 
 );
@@ -157,8 +156,6 @@ select * from hotel_search('Dhaka');
 
 
 
-
-
 create table car (
 	car_id serial PRIMARY KEY,
 	property_id serial references property(property_id),
@@ -166,35 +163,23 @@ create table car (
 );
 
 
-create table driver (
-	driver_id serial PRIMARY KEY,
-	driver_name text NOT NULL,
-	mobile_number text NOT NULL,
-	rating numeric check( rating >=0 and rating <= 5)
+CREATE TABLE CAR_rental_company_REVIEW(
+	REVIEW_ID   int PRIMARY KEY,
+	COMPANY_ID    SERIAL REFERENCES CAR_RENTAL_COMPANY(COMPANY_ID),
+	CLIENT_ID   SERIAL REFERENCES CLIENT(CLIENT_ID),
+	REVIEW_DATE DATE,
+	RATING NUMERIC CHECK (RATING >= 0 AND RATING <= 5),
+	DESCRIPTION TEXT
 );
 
-CREATE TABLE car_driver_relation (
-	car_id serial references car(car_id) ,
-	driver_id serial references driver(driver_id),
-	date_of_booking date
-);
 
-CREATE TABLE car_request (
-	car_id serial references car(car_id),
-	client_id serial references client(client_id),
-	hire_date date NOT NULL,
-	destination text NOT NULL,
-	pickup_location text NOT NULL,
-	price INT NOT NULL
-);
 
-CREATE TABLE driver_rating_description (
-	driver_id serial references driver(driver_id),
-	client_id serial references client(client_id),
-	rating_date date NOT NULL,
-	rating numeric CHECK( rating>= 0 and rating <=5),
-	description text
-);
+CREATE TABLE CAR_RENTAL_COMPANY (
+	COMPANY_ID INT PRIMARY KEY,
+	company_name text NOT NULL,
+	description text,
+	rating numeric CHECK( rating >= 0 and rating <= 5) 
+)
 
 CREATE TABLE HOTEL_REVIEW(
 	REVIEW_ID   SERIAL PRIMARY KEY,
@@ -238,6 +223,168 @@ BEGIN
 	if c_id is null then
 		return true;
 	else return false;
+	end if;
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+CREATE OR REPLACE FUNCTION update_car_rental_initially(p_id int, p_name text , p_rating numeric , p_description text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+        UPDATE car_rental_company SET company_name = p_name , description = p_description , rating = p_rating
+		WHERE company_id = p_id;
+    END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION insert_car_rental_company_review(comp_id int , cl_id int , rev_date date , rat numeric , des text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into car_rental_company_review(company_id , client_id , review_date ,  rating , description) 
+		values(comp_id , cl_id , rev_date , rat , des);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION company_rating_update_trigger()
+	RETURNS TRIGGER AS $$
+DECLARE
+	COMP_SUM numeric;
+	comp_cnt INT;
+	t_row car_rental_company_review%rowtype;
+BEGIN
+	COMP_SUM := 0;
+	comp_cnt := 0;
+	FOR t_row in SElECT * FROM car_rental_company_review LOOP
+		IF( NEW.company_id = company_id) then
+			COMP_SUM := COMP_SUM + rating;
+			comp_cnt := comp_cnt + 1;
+		end if;
+	END LOOP;
+	
+	if( comp_cnt <> 0) then
+		update car_rental_company 
+		set rating = COMP_SUM/comp_cnt
+		where company_id = NEW.company_id;
+	end if;
+END;
+$$
+LANGUAGE plpgsql;
+	
+
+
+DROP TRIGGER IF EXISTS car_rental_company_rating_update_trigger 
+ON car_rental_company_review;
+
+CREATE TRIGGER car_rental_company_rating_update_trigger
+AFTER INSERT 
+ON car_rental_company_review
+FOR EACH ROW
+EXECUTE PROCEDURE company_rating_update_trigger();
+
+
+create table car_request(
+	company_id serial references car_rental_company(company_id),
+	client_id serial references client(client_id),
+	hire_date date,
+	destination text,
+	price int,
+	pick_up_location text
+)
+
+
+
+CREATE OR REPLACE FUNCTION insert_car_request_table(comp_id int , cli_id int ,h_date date , dest text , pr int , pick_up text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into car_request(company_id , client_id , hire_date ,  destination , price , pick_up_location) 
+		values(comp_id , cli_id , h_date , dest , pr , pick_up);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION insert_hotel_review(h_id int , cl_id int , rev_date date , rat numeric , des text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into hotel_review(hotel_id , client_id , review_date ,  rating , description) 
+		values(h_id , cl_id , rev_date , rat , des);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+CREATE OR REPLACE FUNCTION insert_hotel_review(h_id int , cl_id int , rev_date date , rat numeric , des text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into hotel_review(hotel_id , client_id , review_date ,  rating , description) 
+		values(h_id , cl_id , rev_date , rat , des);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION hotel_rating_update_trigger()
+	RETURNS TRIGGER AS $$
+DECLARE
+	COMP_SUM numeric;
+	comp_cnt INT;
+	t_row hotel_review%rowtype;
+BEGIN
+	COMP_SUM := 0;
+	comp_cnt := 0;
+	FOR t_row in SElECT * FROM hotel_review LOOP
+		IF( NEW.hotel_id = hotel_id) then
+			COMP_SUM := COMP_SUM + rating;
+			comp_cnt := comp_cnt + 1;
+		end if;
+	END LOOP;
+	
+	if( comp_cnt <> 0) then
+		update hotel
+		set rating = COMP_SUM/comp_cnt
+		where hotel_id = NEW.hotel_id;
+	end if;
+END;
+$$
+LANGUAGE plpgsql;
+	
+
+
+DROP TRIGGER IF EXISTS hotel_rating_update_trigger 
+ON hotel_review;
+
+CREATE TRIGGER hotel_rating_update_trigger
+AFTER INSERT 
+ON hotel_review
+FOR EACH ROW
+EXECUTE PROCEDURE hotel_rating_update_trigger();
+
+
+CREATE OR REPLACE FUNCTION safe_to_login(c_email TEXT , c_pass TEXT)
+RETURNS bool AS $$
+DECLARE
+	c_id int;
+BEGIN
+	c_id = -1;
+	SELECT client_id INTO c_id
+	FROM client
+	WHERE c_email = email AND MD5(c_pass) = password;
+
+	if c_id is null then
+		return false;
+	else return true;
 	end if;
 END;
 $$ LANGUAGE PLpgSQL;

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="769.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegisterController">
+   <children>
+      <AnchorPane prefHeight="51.0" prefWidth="863.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="134.0" fitWidth="725.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@bookingLogoFullName.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Text layoutX="99.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name: " wrappingWidth="123.7294921875" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="235.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="100.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="e-mail:" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="305.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="100.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="375.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="100.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mobile no:" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="445.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="100.0" layoutY="504.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nationality:" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="515.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <JFXTextField fx:id="name" layoutX="240.0" layoutY="227.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="225.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="email" layoutX="238.0" layoutY="288.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="295.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <JFXPasswordField fx:id="password" layoutX="243.0" layoutY="366.0" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="365.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXPasswordField>
+      <JFXTextField fx:id="mobileNo" layoutX="240.0" layoutY="438.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="435.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="nationality" layoutX="240.0" layoutY="508.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="505.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton buttonType="RAISED" layoutX="315.0" layoutY="590.0" onAction="#RegisterButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Sign Up" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 //Client
 public class BookingClient extends Application {
@@ -16,16 +17,32 @@ public class BookingClient extends Application {
 
 
         stage = primaryStage;
+        //stage.setResizable(false);
+        stage.initStyle(StageStyle.TRANSPARENT);
 
         stage.setResizable(false);
 
-        showRegistrationMenu();
+        showLoginMenu();
+    }
+
+    public void showLoginMenu()  throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Login.fxml") );
+        Parent root = loader.load();
+
+        LoginController controller = loader.getController();
+        controller.setBookingClient(this);
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
     }
 
     public void showRegistrationMenu() throws Exception {
 
         FXMLLoader loader  = new FXMLLoader();
-        loader.setLocation(getClass().getResource("Register.fxml") );
+        loader.setLocation(getClass().getResource("Registration.fxml") );
         Parent root = loader.load();
 
         RegisterController controller = loader.getController();

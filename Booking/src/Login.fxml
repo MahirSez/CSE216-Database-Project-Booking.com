@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="812.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
+   <children>
+      <JFXTextField fx:id="emailField" focusColor="#408ea8" layoutX="287.0" layoutY="339.0" prefHeight="53.0" prefWidth="260.0" promptText="email">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXTextField>
+      <JFXPasswordField fx:id="passwordField" focusColor="#408ea8" layoutX="286.0" layoutY="400.0" prefHeight="44.0" prefWidth="260.0" promptText="Password">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXPasswordField>
+      <JFXButton buttonType="RAISED" layoutX="360.0" layoutY="468.0" onAction="#LogInButtonClicked" prefHeight="44.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Log In" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </JFXButton>
+      <ImageView fitHeight="226.0" fitWidth="417.0" layoutX="209.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bookingLogo.png" />
+         </image></ImageView>
+      <JFXButton buttonType="RAISED" layoutX="682.0" layoutY="35.0" onAction="#RegisterButtonClicked" prefHeight="44.0" prefWidth="101.0" style="-fx-background-color: #003680;" text="Sign Up" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

@@ -2,28 +2,52 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
+import sun.security.provider.MD5;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static java.sql.Types.BOOLEAN;
-import static java.sql.Types.INTEGER;
 
 public class RegisterController {
     private BookingClient bookingClient;
 
     @FXML
-    private JFXTextField emailField;
+    private JFXTextField email;
 
     @FXML
-    private JFXPasswordField passwordField ;
+    private JFXPasswordField password ;
+
+    @FXML
+    private JFXTextField name;
+
+    @FXML
+    private JFXTextField mobileNo;
+    @FXML
+    private JFXTextField nationality;
 
     @FXML
     private void RegisterButtonClicked() {
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        System.out.println(email + " " + password);
+        String mailID = email.getText();
+        String pass = password.getText();
+        String fullName = name.getText();
+        String mobileNumber = mobileNo.getText();
+        String nation = nationality.getText();
+
+        if( mailID.length() ==0 || pass.length() ==0 || fullName.length() ==0 ) {
+
+            Notifications notifications = Notifications.create()
+                    .title("Registration Failed!!")
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.TOP_RIGHT);
+            notifications.showError();
+            return;
+        }
 
         //connect
         DbAdapter dbAdapter = new BookingDbImpl();
@@ -33,19 +57,23 @@ public class RegisterController {
         try {
             String sql = "{call email_safe_to_register(?)}";
             CallableStatement statement = dbAdapter.conn.prepareCall(sql);
-            statement.setString(1 , email);
+            statement.setString(1 , mailID);
             statement.registerOutParameter(1, BOOLEAN);
             statement.execute();
 
             Boolean safe = statement.getBoolean(1);
 
-            System.out.println(safe);
-
             if( !safe ) {
 
-                System.out.println();
+                Notifications notifications = Notifications.create()
+                        .title("Registration Failed!!")
+                        .text("this mail has already been registered")
+                        .graphic(null)
+                        .hideAfter(Duration.seconds(3))
+                        .position(Pos.TOP_RIGHT);
+                notifications.showError();
                 dbAdapter.disconnect();
-                System.out.println("aage ase");
+
                 return;
             }
 
@@ -53,17 +81,28 @@ public class RegisterController {
             e.printStackTrace();
         }
 
-        try {
-            String sql = "insert into client(email, password) values(? , ?)";
-            PreparedStatement statement = dbAdapter.conn.prepareStatement(sql);
-            statement.setString(1 , email);
-            statement.setString(2 , password);
-            statement.executeUpdate();
 
-            System.out.println("done");
+        
+        try {
+            String sql = "insert into client(CLIENT_NAME , email, password , MOBILE_N0 , NATIONALITY) values(? , ?, MD5(?) , ? , ?)";
+            PreparedStatement statement = dbAdapter.conn.prepareStatement(sql);
+            statement.setString(1 , fullName);
+            statement.setString(2 , mailID);
+            statement.setString(3 , pass);
+            statement.setString(4 , mobileNumber);
+            statement.setString(5 , nation);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        Notifications notifications = Notifications.create()
+                .title("Confirmation!")
+                .text("Successfully Registered")
+                .graphic(null)
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.TOP_RIGHT);
+        notifications.showConfirm();
 
 
         //disconnect
