@@ -54,10 +54,21 @@ public class BookingClient extends Application {
         stage.show();
     }
 
+    public void showHotelCarSelectionMenu() throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("HotelCarSelection.fxml") );
+        Parent root = loader.load();
+
+        HotelCarSelectionController controller = loader.getController();
+        controller.setBookingClient(this);
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
+
     public static void main(String[] args) {
-
         launch(args);
-
-
     }
 }

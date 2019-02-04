@@ -33,7 +33,7 @@ public class LoginController {
 
 
         try {
-            String sql = "{call safe_to_login(?,?)}";
+            String sql = "{call safe_to_login(?,MD5(?) )}";
             CallableStatement statement = dbAdapter.conn.prepareCall(sql);
             statement.setString(1 , email);
             statement.setString(2 , password);
@@ -71,6 +71,12 @@ public class LoginController {
 
         //disconnect
         dbAdapter.disconnect();
+
+        try {
+            bookingClient.showHotelCarSelectionMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

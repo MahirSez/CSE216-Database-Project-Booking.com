@@ -17,10 +17,10 @@ public class RegisterController {
     private BookingClient bookingClient;
 
     @FXML
-    private JFXTextField email;
+    private JFXTextField emailField;
 
     @FXML
-    private JFXPasswordField password ;
+    private JFXPasswordField passwordFirld ;
 
     @FXML
     private JFXTextField name;
@@ -31,9 +31,18 @@ public class RegisterController {
     private JFXTextField nationality;
 
     @FXML
+    private void homeLinkClicked() {
+        try {
+            bookingClient.showLoginMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void RegisterButtonClicked() {
-        String mailID = email.getText();
-        String pass = password.getText();
+        String mailID = emailField.getText();
+        String pass = passwordFirld.getText();
         String fullName = name.getText();
         String mobileNumber = mobileNo.getText();
         String nation = nationality.getText();
@@ -107,6 +116,13 @@ public class RegisterController {
 
         //disconnect
         dbAdapter.disconnect();
+
+
+        try {
+            bookingClient.showHotelCarSelectionMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setBookingClient(BookingClient bookingClient) {

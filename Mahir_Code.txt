@@ -380,7 +380,7 @@ BEGIN
 	c_id = -1;
 	SELECT client_id INTO c_id
 	FROM client
-	WHERE c_email = email AND MD5(c_pass) = password;
+	WHERE c_email = email AND c_pass = password;
 
 	if c_id is null then
 		return false;

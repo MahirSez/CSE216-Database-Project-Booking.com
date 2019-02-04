@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,9 +19,10 @@
                   <Image url="@bookingLogoFullName.png" />
                </image>
             </ImageView>
+            <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <Text layoutX="99.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name: " wrappingWidth="123.7294921875" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="235.0">
+      <Text layoutX="99.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="123.7294921875" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="235.0">
          <font>
             <Font size="19.0" />
          </font>
@@ -50,12 +52,12 @@
             <Font size="19.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="email" layoutX="238.0" layoutY="288.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="295.0">
+      <JFXTextField fx:id="emailField" layoutX="238.0" layoutY="288.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="295.0">
          <font>
             <Font size="19.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="password" layoutX="243.0" layoutY="366.0" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="365.0">
+      <JFXPasswordField fx:id="passwordFirld" layoutX="243.0" layoutY="366.0" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="365.0">
          <font>
             <Font size="19.0" />
          </font>
