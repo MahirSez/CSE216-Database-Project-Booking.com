@@ -1,8 +1,0 @@
-﻿CREATE TABLE CLIENT(
-   CLIENT_ID        SERIAL      PRIMARY KEY,
-   CLIENT_NAME      varchar    	,
-   PASSWORD         VARCHAR     NOT NULL,
-   EMAIL 	   		 VARCHAR	NOT NULL,
-   MOBILE_N0 	    VARCHAR	,
-   NATIONALITY 	    VARCHAR 
-);
