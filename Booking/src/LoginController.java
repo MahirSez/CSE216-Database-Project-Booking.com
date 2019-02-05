@@ -28,7 +28,7 @@ public class LoginController {
         System.out.println(email + " " + password);
 
         //connect
-        DbAdapter dbAdapter = new BookingDbImpl();
+        DbAdapter dbAdapter = new DbAdapter();
         dbAdapter.connect();
 
 

@@ -36,14 +36,23 @@ public class HotelCarSelectionController {
         typeOfProperty = (String) selection.getValue();
     }
 
+
+
     @FXML
     private  void submitButtonClicked() {
-        try {
+
+        if( typeOfProperty.equals("Hotel")) {
+            try {
+                bookingClient.cityName = cityField.getText();
+                bookingClient.showListedHotels(bookingClient.cityName);
 
 
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("Still Not Handled");
         }
     }
 

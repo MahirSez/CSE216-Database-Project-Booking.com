@@ -9,6 +9,7 @@ import javafx.stage.StageStyle;
 public class BookingClient extends Application {
 
     Stage stage;
+    String cityName;
 
 
     @Override
@@ -61,6 +62,19 @@ public class BookingClient extends Application {
 
         HotelCarSelectionController controller = loader.getController();
         controller.setBookingClient(this);
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
+    public void showListedHotels(String cityName) throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ListedHotels.fxml") );
+        Parent root = loader.load();
+
+        ListedHotelsController controller = loader.getController();
+        controller.setBookingClient(this , cityName);
 
         stage.setScene(new Scene(root) );
 

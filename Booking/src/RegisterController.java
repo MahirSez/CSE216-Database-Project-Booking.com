@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import sun.security.provider.MD5;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -20,7 +19,7 @@ public class RegisterController {
     private JFXTextField emailField;
 
     @FXML
-    private JFXPasswordField passwordFirld ;
+    private JFXPasswordField passwordField;
 
     @FXML
     private JFXTextField name;
@@ -42,7 +41,7 @@ public class RegisterController {
     @FXML
     private void RegisterButtonClicked() {
         String mailID = emailField.getText();
-        String pass = passwordFirld.getText();
+        String pass = passwordField.getText();
         String fullName = name.getText();
         String mobileNumber = mobileNo.getText();
         String nation = nationality.getText();
@@ -59,7 +58,7 @@ public class RegisterController {
         }
 
         //connect
-        DbAdapter dbAdapter = new BookingDbImpl();
+        DbAdapter dbAdapter = new DbAdapter();
         dbAdapter.connect();
 
 

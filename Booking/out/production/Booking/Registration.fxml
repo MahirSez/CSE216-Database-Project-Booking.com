@@ -57,7 +57,7 @@
             <Font size="19.0" />
          </font>
       </JFXTextField>
-      <JFXPasswordField fx:id="passwordFirld" layoutX="243.0" layoutY="366.0" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="365.0">
+      <JFXPasswordField fx:id="passwordField" layoutX="243.0" layoutY="366.0" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="365.0">
          <font>
             <Font size="19.0" />
          </font>

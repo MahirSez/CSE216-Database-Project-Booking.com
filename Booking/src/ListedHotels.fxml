@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="769.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedHotelsController">
+   <children>
+      <AnchorPane prefHeight="113.0" prefWidth="769.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="134.0" fitWidth="725.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@bookingLogoFullName.png" />
+               </image>
+            </ImageView>
+            <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <FlowPane fx:id="main" layoutX="1.0" layoutY="134.0" prefHeight="571.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <JFXTreeTableView fx:id="treeView" prefHeight="574.0" prefWidth="770.0">
+               <columns>
+                  <JFXTreeTableColumn fx:id="hotelNameColumn" editable="false" minWidth="475.0" prefWidth="475.0" resizable="false" sortType="DESCENDING" sortable="false" text="Hotel Name" />
+                  <JFXTreeTableColumn fx:id="hotelRatingColumn" editable="false" minWidth="284.0" prefWidth="284.0" resizable="false" sortType="DESCENDING" sortable="false" text="Rating" />
+               </columns></JFXTreeTableView>
+         </children>
+      </FlowPane>
+   </children>
+</AnchorPane>

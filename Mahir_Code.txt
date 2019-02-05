@@ -63,11 +63,6 @@ BEGIN
 	FROM CITY
 	WHERE C_NAME = city_name;
 	RETURN C_ID;
-EXCEPTION
-	WHEN NO_DATA_FOUND THEN 
-		RETURN 'NO CITY FOUND';
-	WHEN OTHERS THEN
-		RETURN 'OTHERS EXCEPTION IN FUNCTION GET_CITY_ID';
 END;
 $$ LANGUAGE PLpgSQL;
 
@@ -101,22 +96,22 @@ insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4)
 insert into property(property_type , owner_id , city_id) VALUES('hotel' , 1 , 4);
 
 
-insert into hotel(property_id , hotel_name ) values(1 , 'Hotel Carnival');
-insert into hotel(property_id , hotel_name ) values(3 , 'Urban Hotel');
-insert into hotel(property_id , hotel_name ) values(4 , 'Shornali Garden');
-insert into hotel(property_id , hotel_name ) values(6 , 'Heaven Villa');
-insert into hotel(property_id , hotel_name ) values(8 , 'Heaven Village');
-insert into hotel(property_id , hotel_name ) values(9 , 'Tour Heaven');
-insert into hotel(property_id , hotel_name ) values(10 , 'Tropical Heven');
-insert into hotel(property_id , hotel_name ) values(11 , 'Hotel Journal');
-insert into hotel(property_id , hotel_name ) values(12 , 'Tour de cyclist');
-insert into hotel(property_id , hotel_name ) values(13 , 'Padison');
-insert into hotel(property_id , hotel_name ) values(14 , 'Water Red');
-insert into hotel(property_id , hotel_name ) values(15 , 'HouseWood');
-insert into hotel(property_id , hotel_name ) values(16 , 'La La Island');
-insert into hotel(property_id , hotel_name ) values(17 , 'SWH Villa');
-insert into hotel(property_id , hotel_name ) values(18 , 'Road Run');
-insert into hotel(property_id , hotel_name ) values(19 , 'Food Village');
+insert into hotel( hotel_name ) values('Hotel Carnival');
+insert into hotel(hotel_name ) values('Urban Hotel');
+insert into hotel(hotel_name ) values('Shornali Garden');
+insert into hotel( hotel_name ) values( 'Heaven Villa');
+insert into hotel(hotel_name ) values( 'Heaven Village');
+insert into hotel(hotel_name ) values('Tour Heaven');
+insert into hotel(hotel_name ) values( 'Tropical Heven');
+insert into hotel(hotel_name ) values( 'Hotel Journal');
+insert into hotel( hotel_name ) values( 'Tour de cyclist');
+insert into hotel( hotel_name ) values( 'Padison');
+insert into hotel(hotel_name ) values( 'Water Red');
+insert into hotel(hotel_name ) values( 'HouseWood');
+insert into hotel( hotel_name ) values( 'La La Island');
+insert into hotel( hotel_name ) values( 'SWH Villa');
+insert into hotel(hotel_name ) values( 'Road Run');
+insert into hotel( hotel_name ) values( 'Food Village');
 
 
 
@@ -124,6 +119,7 @@ insert into hotel(property_id , hotel_name ) values(19 , 'Food Village');
 
 CREATE OR REPLACE FUNCTION hotel_search(city_name text)
 RETURNS TABLE(
+	Hotel_ID,
 	HOTEL_NAME TEXT,
 	RATING NUMERIC
 ) AS $$
@@ -132,7 +128,7 @@ DECLARE
 BEGIN
 	C_ID = get_city_id(city_name);
 	RETURN QUERY 
-	SELECT h.hotel_name , h.rating
+	SELECT h.hotel_id , h.hotel_name , h.rating
 	FROM property p 
 	JOIN hotel h
 	ON(p.city_id = c_id AND h.property_id = p.property_id )
@@ -371,7 +367,7 @@ ON hotel_review
 FOR EACH ROW
 EXECUTE PROCEDURE hotel_rating_update_trigger();
 
-
+	
 CREATE OR REPLACE FUNCTION safe_to_login(c_email TEXT , c_pass TEXT)
 RETURNS bool AS $$
 DECLARE
