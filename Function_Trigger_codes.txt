@@ -1,0 +1,385 @@
+
+
+-- Checks whether Client has provided valid email and password
+
+CREATE OR REPLACE FUNCTION safe_to_login(c_email TEXT , c_pass TEXT)
+RETURNS bool AS $$
+DECLARE
+	c_id int;
+BEGIN
+	c_id = -1;
+	SELECT client_id INTO c_id
+	FROM client
+	WHERE c_email = email AND c_pass = password;
+
+	if c_id is null then
+		return false;
+	else return true;
+	end if;
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+-- Checks whether this email has been used before while registering
+
+CREATE OR REPLACE FUNCTION email_safe_to_register(c_email TEXT)
+RETURNS bool AS $$
+DECLARE
+	c_id int;
+BEGIN
+	c_id = -1;
+	SELECT client_id INTO c_id
+	FROM client
+	WHERE c_email = email;
+
+	if c_id is null then
+		return true;
+	else return false;
+	end if;
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+
+-- Inserts New Clients Data into Database
+
+insert into client(CLIENT_NAME , email, password , MOBILE_N0 , NATIONALITY) values(? , ?, MD5(?) , ? , ?)
+
+
+
+
+
+-- input = hotel_name 
+-- output = a table of listed hotels in the city sorted by their rating in descending order
+
+CREATE OR REPLACE FUNCTION hotel_search(city_name text)
+RETURNS TABLE(
+	Hotel_ID,
+	HOTEL_NAME TEXT,
+	RATING NUMERIC
+) AS $$
+DECLARE
+	C_ID INTEGER;
+BEGIN
+	C_ID = get_city_id(city_name);
+	RETURN QUERY 
+	SELECT h.hotel_id , h.hotel_name , h.rating
+	FROM property p 
+	JOIN hotel h
+	ON(p.city_id = c_id AND h.property_id = p.property_id )
+	ORDER BY h.rating desc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+-- Returns city_id given the city_name (Used in hotel_search)
+
+
+CREATE OR REPLACE FUNCTION GET_CITY_ID(C_NAME TEXT)
+RETURNS INTEGER AS $$
+DECLARE
+	C_ID INTEGER;
+BEGIN
+	SELECT city_id INTO C_ID
+	FROM CITY
+	WHERE C_NAME = city_name;
+	RETURN C_ID;
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+
+---RETURNS DESCRIPTION(TEXT) TAKING HOTEL_ID
+
+CREATE OR REPLACE FUNCTION GET_HOTEL_DESCRIPTION(H_ID INTEGER)
+RETURNS TEXT AS $$
+DECLARE 
+	DES TEXT;
+BEGIN
+	SELECT DESCRIPTION INTO DES 
+	FROM  HOTEL 
+	WHERE HOTEL_ID = H_ID;
+	RETURN DES;
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+---RETURNS NUBMERS OF ROOMS AND TYPES OF ROOMS FOR EACH HOTEL 
+
+
+CREATE OR REPLACE FUNCTION GET_ALL_ROOMS_OF_HOTEL(H_ID INTEGER,check_in Date,check_out Date)	
+RETURNS TABLE(
+     Q_ROOM_TYPE TEXT,
+     AVAILABLE_QUANTITY INTEGER
+     ) AS $$
+
+DECLARE 
+
+BEGIN 
+	RETURN QUERY 
+	
+	select R.room_type, cast ( count(*) AS INTEGER ) 
+	from rooms R 
+	where 0 = 
+ 	(select count(*)
+		from ROOM_RESERVE RR join RESERVATIONS res 
+		ON (RR.RESERVATION_ID = res.RESERVATION_ID)
+		where (RR.ROOM_ID = R.room_ID) and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) )
+	)
+	group by R.room_type;
+ 	
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+-- Hotel_review query NOT COMPLETE
+
+
+
+
+-- Reservation table update
+
+INSERT INTO public.reservations( hotel_id, checkin_date, checkout_date, client_id, price) VALUES ( ?, ?,?, ?, ?);
+
+
+
+
+---RETURNS HOTEL_ID FROM HOTEL NAME ( ASSUMES ONE CITY_NAME HAS ONE ID) (MIGHT BE UPDATED)
+
+CREATE OR REPLACE FUNCTION GET_HOTEL_ID(NAME VARCHAR)
+RETURNS INTEGER AS $$
+
+DECLARE 
+	H_ID INTEGER;
+BEGIN
+	SELECT HOTEL_ID INTO H_ID
+	FROM HOTEL
+	WHERE HOTEL_NAME = NAME;
+	RETURN H_ID;
+END;
+$$ LANGUAGE PLpgSQL;
+
+create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
+	returns integer AS $$
+DECLARE
+	counter integer ;
+	rec rooms%rowtype;
+	rid integer;
+BEGIN
+	counter := 0;
+	rid := -1;
+	for rec IN 
+ 	select ROOM_ID from rooms 	
+	LOOP 
+	if counter < how_many then 
+		INSERT INTO public.room_reserve(room_id, reservation_id) values(rec.room_ID, res_id); 
+		counter := counter + 1;
+	end if;
+		/*if room_type = r_type and  0 = get_room_collide_with_how_many_reservation( ROOM_ID,check_in,check_out) then
+			rid := rec.ROOM_ID;
+			exit;
+		END IF;*/
+			
+	/*if counter < how_many and room_type = r_type and  0 = get_room_collide_with_how_many_reservation( ROOM_ID,check_in,check_out) then
+		INSERT INTO public.room_reserve(room_id, reservation_id) values(rec.room_ID, res_id); 
+			counter := counter + 1;*/
+	END LOOP;
+	return rid;
+
+END;
+$$ LANGUAGE PLpgSQL;	
+
+
+
+
+
+-- Insert Hotel Review into Database
+
+CREATE OR REPLACE FUNCTION insert_hotel_review(h_id int , cl_id int , rev_date date , rat numeric , des text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into hotel_review(hotel_id , client_id , review_date ,  rating , description) 
+		values(h_id , cl_id , rev_date , rat , des);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- Triggers Rating update to hotels
+
+
+CREATE OR REPLACE FUNCTION hotel_rating_update_trigger()
+	RETURNS TRIGGER AS $$
+DECLARE
+	COMP_SUM numeric;
+	comp_cnt INT;
+	t_row hotel_review%rowtype;
+BEGIN
+	COMP_SUM := 0;
+	comp_cnt := 0;
+	FOR t_row in SElECT * FROM hotel_review LOOP
+		IF( NEW.hotel_id = hotel_id) then
+			COMP_SUM := COMP_SUM + rating;
+			comp_cnt := comp_cnt + 1;
+		end if;
+	END LOOP;
+	
+	if( comp_cnt <> 0) then
+		update hotel
+		set rating = COMP_SUM/comp_cnt
+		where hotel_id = NEW.hotel_id;
+	end if;
+END;
+$$
+LANGUAGE plpgsql;
+	
+
+
+-- Attatch Trigger
+
+CREATE TRIGGER hotel_rating_update_trigger
+AFTER INSERT 
+ON hotel_review
+FOR EACH ROW
+EXECUTE PROCEDURE hotel_rating_update_trigger();
+
+
+
+
+
+
+
+-- Car Rental Company Search
+
+CREATE OR REPLACE FUNCTION car_rental_company_search(city_name text)
+RETURNS TABLE(
+	company_ID int,
+	company_NAME TEXT,
+	RATING NUMERIC
+) AS $$
+DECLARE
+	C_ID INTEGER;
+BEGIN
+	C_ID = get_city_id(city_name);
+	RETURN QUERY 
+	SELECT h.company_id , h.company_name , h.rating
+	FROM property p 
+	JOIN car_rental_company h
+	ON(p.city_id = c_id AND h.property_id = p.property_id )
+	ORDER BY h.rating desc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Update Car requests into database
+
+CREATE OR REPLACE FUNCTION insert_car_request_table(comp_id int , cli_id int ,h_date date , dest text , pr int , pick_up text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into car_request(company_id , client_id , hire_date ,  destination , price , pick_up_location) 
+		values(comp_id , cli_id , h_date , dest , pr , pick_up);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+-- Update review on database
+
+CREATE OR REPLACE FUNCTION insert_car_rental_company_review(comp_id int , cl_id int , rev_date date , rat numeric , des text) RETURNS void AS $$
+    DECLARE
+		        
+    BEGIN
+		insert into car_rental_company_review(company_id , client_id , review_date ,  rating , description) 
+		values(comp_id , cl_id , rev_date , rat , des);
+    END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- trigger for updating company rating
+
+
+CREATE OR REPLACE FUNCTION company_rating_update_trigger()
+	RETURNS TRIGGER AS $$
+DECLARE
+	COMP_SUM numeric;
+	comp_cnt INT;
+	t_row car_rental_company_review%rowtype;
+BEGIN
+	COMP_SUM := 0;
+	comp_cnt := 0;
+	FOR t_row in SElECT * FROM car_rental_company_review LOOP
+		IF( NEW.company_id = company_id) then
+			COMP_SUM := COMP_SUM + rating;
+			comp_cnt := comp_cnt + 1;
+		end if;
+	END LOOP;
+	
+	if( comp_cnt <> 0) then
+		update car_rental_company 
+		set rating = COMP_SUM/comp_cnt
+		where company_id = NEW.company_id;
+	end if;
+END;
+$$
+LANGUAGE plpgsql;
+	
+
+-- attach trigger
+
+CREATE TRIGGER car_rental_company_rating_update_trigger
+AFTER INSERT 
+ON car_rental_company_review
+FOR EACH ROW
+EXECUTE PROCEDURE company_rating_update_trigger();
+
+
+
+
+
+
+---TRIGGER FOR PROPERTY THAT WILL CALL HOTEL INSERT ( CAR NOT HANDLED)
+
+CREATE OR REPLACE FUNCTION PROP_INS_HOTEL_INS()
+	RETURNS TRIGGER AS $$
+BEGIN
+     
+     IF NEW.PROPERTY_TYPE = 'hotel' THEN
+     	INSERT INTO hotel(
+            hotel_id, hotel_name, description, rating)
+    		VALUES (NEW.PROPERTY_ID, ?, ?, ?);
+     
+     ELSEIF NEW.PROPERTY_TYPE = 'car_rental' THEN
+     	INSERT INTO public.hotel(
+            company_id)
+    		VALUES (NEW.PROPERTY_ID);
+     END IF;
+     RETURN NEW;
+END
+$$ LANGUAGE PLpgSQL
+
+
+
+-- Attach trigger
+
+CREATE TRIGGER PROP_INS_HOTEL_INS_TRIG
+AFTER INSERT 
+ON PROPERTY
+FOR EACH ROW
+EXECUTE PROCEDURE PROP_INS_HOTEL_INS();

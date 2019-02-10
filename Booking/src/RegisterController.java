@@ -39,7 +39,7 @@ public class RegisterController {
     }
 
     @FXML
-    private void RegisterButtonClicked() {
+    private void RegisterButtonClickezd() {
         String mailID = emailField.getText();
         String pass = passwordField.getText();
         String fullName = name.getText();

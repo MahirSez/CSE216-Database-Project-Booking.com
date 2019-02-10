@@ -2,8 +2,6 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -13,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.layout.FlowPane;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -24,8 +21,6 @@ public class ListedHotelsController implements Initializable{
     private BookingClient bookingClient;
     private String cityName;
 
-    @FXML
-    private FlowPane main;
 
     @FXML
     private JFXTreeTableView<ListedHotel> treeView;

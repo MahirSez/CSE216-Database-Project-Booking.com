@@ -1,0 +1,120 @@
+CREATE TABLE owner (
+	owner_id	serial PRIMARY KEY,
+	name 		text NOT NULL,
+	nationality	text NOT NULL,
+	email		text NOT NULL,
+	password	text NOT NULL
+	phone 		text
+);
+
+CREATE TABLE city (
+	city_id serial PRIMARY KEY,
+	city_name text NOT NULL UNIQUE,
+	country text NOT NULL,
+	number_of_properties INTEGER
+);
+
+CREATE TABLE property (
+	property_id serial PRIMARY KEY,
+	property_type text NOT NULL CHECK ( property_type = 'hotel' or property_type ='car' ),
+	owner_id serial references owner(owner_id),
+	city_id serial references city(city_id)
+);	
+
+
+	
+CREATE TABLE hotel(
+	hotel_id serial PRIMARY KEY,
+	hotel_name text ,
+	description text,
+	rating numberic CHECK( rating >= 0 and rating <= 5) 
+);
+
+
+CREATE TABLE rooms (
+	room_id serial PRIMARY KEY,
+	hotel_id serial references hotel(hotel_id),
+	room_type text NOT NULL,
+	price integer CHECK (price >= 0) NOT NULL,
+	facilities text,
+	reservation_id serial references reservations(reservation_id),
+	capacity integer CHECK (capacity >=0)
+);
+
+
+
+
+CREATE TABLE reservations (
+	reservation_id serial PRIMARY KEY,
+	hotel_id serial references hotel(hotel_id),
+	checkin_date date,
+	checkout_date date,
+	client_id serial references client(client_id),
+	price integer CHECK (price>=0)
+);
+
+
+CREATE TABLE CAR_rental_company_REVIEW(
+	REVIEW_ID   int PRIMARY KEY,
+	COMPANY_ID    SERIAL REFERENCES CAR_RENTAL_COMPANY(COMPANY_ID),
+	CLIENT_ID   SERIAL REFERENCES CLIENT(CLIENT_ID),
+	REVIEW_DATE DATE,
+	RATING NUMERIC CHECK (RATING >= 0 AND RATING <= 5),
+	DESCRIPTION TEXT
+);
+
+
+
+CREATE TABLE CAR_RENTAL_COMPANY (
+	COMPANY_ID INT PRIMARY KEY,
+	company_name text NOT NULL,
+	description text,
+	rating numeric CHECK( rating >= 0 and rating <= 5) 
+)
+
+CREATE TABLE HOTEL_REVIEW(
+	REVIEW_ID   SERIAL PRIMARY KEY,
+	HOTEL_ID    SERIAL REFERENCES HOTEL(HOTEL_ID),
+	CLIENT_ID   SERIAL REFERENCES CLIENT(CLIENT_ID),
+	REVIEW_DATE DATE,
+	RATING INTEGER CHECK (RATING >= 0 AND RATING <= 5),
+	DESCRIPTION VARCHAR
+);
+
+
+CREATE TABLE reservation_history (
+	roomID INT NOT NULL,
+	hotel_id int NOT NULL,
+	client_id int NOT NULL,
+	check_in_date date NOT NULL,
+	check_out_date date NOT NULL,
+	price INT NOT NULL,
+	history_id serial PRIMARY KEY
+)
+
+
+CREATE TABLE ROOM_RESERVE
+(
+	ROOM_ID INTEGER REFERENCES ROOMS(ROOM_ID),
+	RESERVATION_ID INTEGER REFERENCES RESERVATIONS(RESERVATION_ID)
+);
+
+
+CREATE TABLE CLIENT(
+   CLIENT_ID        SERIAL      PRIMARY KEY,
+   CLIENT_NAME      varchar    	,
+   PASSWORD         VARCHAR     NOT NULL,
+   EMAIL 	   		 VARCHAR	NOT NULL,
+   MOBILE_N0 	    VARCHAR	,
+   NATIONALITY 	    VARCHAR 
+);
+
+
+create table car_request(
+	company_id serial references car_rental_company(company_id),
+	client_id serial references client(client_id),
+	hire_date date,
+	destination text,
+	price int,
+	pick_up_location text
+)
