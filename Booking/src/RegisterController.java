@@ -1,6 +1,7 @@
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.util.Duration;
@@ -8,6 +9,7 @@ import org.controlsfx.control.Notifications;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static java.sql.Types.BOOLEAN;
@@ -38,8 +40,10 @@ public class RegisterController {
         }
     }
 
+
+
     @FXML
-    private void RegisterButtonClickezd() {
+    private void RegisterButtonClicked() {
         String mailID = emailField.getText();
         String pass = passwordField.getText();
         String fullName = name.getText();
@@ -111,6 +115,22 @@ public class RegisterController {
                 .hideAfter(Duration.seconds(3))
                 .position(Pos.TOP_RIGHT);
         notifications.showConfirm();
+
+        try {
+            String SQL = "select client_id from client where email = ? ";
+
+            PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
+            statement.setString(1 , mailID);
+            ResultSet result = statement.executeQuery();
+            int id =0;
+            while( result.next()) {
+                id = result.getInt(1);
+
+                bookingClient.clientID = id;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         //disconnect

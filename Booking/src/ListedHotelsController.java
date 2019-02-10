@@ -1,17 +1,19 @@
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.cells.editors.base.JFXTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.util.Callback;
+import sun.reflect.generics.tree.Tree;
 
 import java.net.URL;
 import java.sql.*;
@@ -20,6 +22,8 @@ import java.util.*;
 public class ListedHotelsController implements Initializable{
     private BookingClient bookingClient;
     private String cityName;
+
+
 
 
     @FXML
@@ -32,6 +36,10 @@ public class ListedHotelsController implements Initializable{
 
     @FXML
     JFXTreeTableColumn<ListedHotel, String> hotelRatingColumn;
+    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+
+
 
 
     @FXML
@@ -42,11 +50,31 @@ public class ListedHotelsController implements Initializable{
          e.printStackTrace();
         }
     }
+    @FXML
+    void SelectButtonClicked() {
+        TreeItem<ListedHotel> selectedItem ;
+        selectedItem = treeView.getSelectionModel().getSelectedItem();
+        if( selectedItem == null  ) {
+            return;
+        }
+
+        int id = selectedItem.getParent().getChildren().indexOf(selectedItem);
+        System.out.println(id +" " + map.get(id));
+
+
+        try {
+            bookingClient.showHotelDescription(map.get(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         hotelList = FXCollections.observableArrayList();
+
         hotelNameColumn = new JFXTreeTableColumn<>("Hotel Name");
         hotelNameColumn.setPrefWidth(350);
         hotelNameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedHotel, String>, ObservableValue<String>>() {
@@ -55,6 +83,8 @@ public class ListedHotelsController implements Initializable{
                 return param.getValue().getValue().hotelName;
             }
         });
+        hotelNameColumn.setSortable(false);
+
 
 
         hotelRatingColumn = new JFXTreeTableColumn<>("Rating");
@@ -65,6 +95,9 @@ public class ListedHotelsController implements Initializable{
                 return param.getValue().getValue().rating;
             }
         });
+        hotelRatingColumn.setSortable(false);
+
+
     }
 
     private void populateTable() {
@@ -87,12 +120,14 @@ public class ListedHotelsController implements Initializable{
             PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
             statement.setString(1 , cityName);
             ResultSet result = statement.executeQuery();
-
+            int id =0;
             while( result.next()) {
                 int hotelID = result.getInt(1);
                 String hotelName = result.getString(2);
                 Double hotelRating = result.getDouble(3);
                 //System.out.println(hotelID + " "  + hotelName + " " + hotelRating);
+                //System.out.println(id + " " + hotelID + " " + hotelName);
+                map.put(id++ , hotelID);
                 hotelList.add(new ListedHotel(hotelName , hotelRating));
             }
 
@@ -106,6 +141,7 @@ public class ListedHotelsController implements Initializable{
 
 
     }
+
 
 
 

@@ -8,6 +8,7 @@ import org.controlsfx.control.Notifications;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static java.sql.Types.BOOLEAN;
@@ -68,6 +69,24 @@ public class LoginController {
                 .position(Pos.TOP_RIGHT);
         notifications.showConfirm();
         System.out.println(password + " " + email);
+
+
+        try {
+            String SQL = "select client_id from client where email = ? ";
+
+            PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
+            statement.setString(1 , email);
+            ResultSet result = statement.executeQuery();
+            int id =0;
+            while( result.next()) {
+                id = result.getInt(1);
+
+                bookingClient.clientID = id;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         //disconnect
         dbAdapter.disconnect();

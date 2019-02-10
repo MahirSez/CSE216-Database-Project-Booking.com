@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTreeTableColumn?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Hyperlink?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="769.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedHotelsController">
    <children>
@@ -20,14 +22,19 @@
             <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <FlowPane fx:id="main" layoutX="1.0" layoutY="134.0" prefHeight="571.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <FlowPane layoutX="1.0" layoutY="134.0" prefHeight="488.0" prefWidth="769.0" AnchorPane.bottomAnchor="86.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <JFXTreeTableView fx:id="treeView" prefHeight="574.0" prefWidth="770.0">
+            <JFXTreeTableView fx:id="treeView" prefHeight="488.0" prefWidth="770.0">
                <columns>
                   <JFXTreeTableColumn fx:id="hotelNameColumn" editable="false" minWidth="475.0" prefWidth="475.0" resizable="false" sortType="DESCENDING" sortable="false" text="Hotel Name" />
                   <JFXTreeTableColumn fx:id="hotelRatingColumn" editable="false" minWidth="284.0" prefWidth="284.0" resizable="false" sortType="DESCENDING" sortable="false" text="Rating" />
                </columns></JFXTreeTableView>
          </children>
       </FlowPane>
+      <JFXButton buttonType="RAISED" layoutX="317.0" layoutY="641.0" onAction="#SelectButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Select" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

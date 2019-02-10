@@ -222,27 +222,24 @@ $$ LANGUAGE plpgsql;
 -- Triggers Rating update to hotels
 
 
+	
 CREATE OR REPLACE FUNCTION hotel_rating_update_trigger()
 	RETURNS TRIGGER AS $$
 DECLARE
-	COMP_SUM numeric;
-	comp_cnt INT;
+	avg_rating numeric;
 	t_row hotel_review%rowtype;
 BEGIN
-	COMP_SUM := 0;
-	comp_cnt := 0;
-	FOR t_row in SElECT * FROM hotel_review LOOP
-		IF( NEW.hotel_id = hotel_id) then
-			COMP_SUM := COMP_SUM + rating;
-			comp_cnt := comp_cnt + 1;
-		end if;
-	END LOOP;
+	select avg(rating) into avg_rating
+	from hotel_review
+	where( hotel_id= new.hotel_id);
 	
-	if( comp_cnt <> 0) then
-		update hotel
-		set rating = COMP_SUM/comp_cnt
-		where hotel_id = NEW.hotel_id;
-	end if;
+	avg_rating := round(avg_rating , 2);
+	update hotel 
+	set rating =  avg_rating
+	where hotel_id = NEW.hotel_id;
+	
+	
+	return NEW;
 END;
 $$
 LANGUAGE plpgsql;
