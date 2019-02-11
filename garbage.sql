@@ -22,8 +22,9 @@ begin
 	select count(*) into ret
 	from ROOM_RESERVE RM join reservations res 
 	ON(RM.RESERVATION_ID = res.reservation_id )
-	where RM.ROOM_ID = r_ID and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
-		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) );
+	where RM.ROOM_ID = r_ID and ( ( res.checkin_date <= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date <= check_out and check_out <= res.checkout_date ) );
+
 	return ret;
 
 end;
@@ -80,3 +81,68 @@ BEGIN
 	ORDER BY h.rating desc;
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+
+---
+CREATE OR REPLACE FUNCTION GET_ALL_Candidate_ROOMS_OF_HOTEL(H_ID INTEGER,price_min integer, price_max integer,check_in Date,check_out Date, persons integer)	
+RETURNS TABLE(
+	Q_ROOM_TYPE TEXT,
+	price INTEGER,
+	capacity integer,
+	faci TEXT,
+	how_many integer
+	) AS $$
+
+DECLARE 
+
+BEGIN 
+	RETURN QUERY 
+	
+	select RR.room_type, RR.price, RR.capacity, RR.facilities, cast (count(*) AS INTEGER)
+
+	from room_type_table RR join rooms R 
+	ON(RR.room_type = R.room_type)
+	where R.hotel_ID = H_ID and RR.price >= price_min and RR.price <= price_max and get_room_collide_with_how_many_reservation(R.room_ID, check_in, check_out) = 0 
+	group by RR.room_type, RR.price, RR.capacity, RR.facilities;
+
+	/* select R.room_type, cast ( count(*) AS INTEGER ) 
+	from rooms R 
+	where 0 = 
+ 	(select count(*)
+		from ROOM_RESERVE RR join RESERVATIONS res 
+		ON (RR.RESERVATION_ID = res.RESERVATION_ID)
+		where (RR.ROOM_ID = R.room_ID) and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) )
+	)
+	group by R.room_type; */
+ 	
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+/* create or replace FUNCTION checker_get_room_collide_with_how_many_reservation(r_ID integer, check_in date, check_out date)
+	returns TABLE(
+        res_id integer,
+        in_date date,
+        out_date date
+    ) AS $$
+DECLARE 
+       ret integer;
+begin 
+    return query
+
+	select res.reservation_id, res.checkin_date, res.checkout_date 
+	from ROOM_RESERVE RM join reservations res 
+	ON(RM.RESERVATION_ID = res.reservation_id )
+	where RM.ROOM_ID = r_ID and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) );
+        
+	
+
+end;
+$$ LANGUAGE PLpgSQL;
+ */
