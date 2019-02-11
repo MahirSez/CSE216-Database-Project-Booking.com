@@ -1,3 +1,21 @@
+---date :
+---alter table room 
+ALTER table rooms 
+DROP column capacity,
+DROP column facilities,
+DROP column price;
+
+---create room type table
+
+create table Room_type_table(
+	room_type TEXT,
+	capacity integer,
+	price integer
+);
+
+
+
+
 -- input = city_name, price range, persons 
 -- output = a table of listed hotels in the city sorted by their rating in descending order
 
