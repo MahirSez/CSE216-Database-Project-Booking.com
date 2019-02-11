@@ -124,7 +124,7 @@ $$ LANGUAGE PLpgSQL;
 
 
 
-/* create or replace FUNCTION checker_get_room_collide_with_how_many_reservation(r_ID integer, check_in date, check_out date)
+create or replace FUNCTION checker_get_room_collide_with_how_many_reservation(r_ID integer, check_in date, check_out date)
 	returns TABLE(
         res_id integer,
         in_date date,
@@ -145,4 +145,28 @@ begin
 
 end;
 $$ LANGUAGE PLpgSQL;
- */
+
+
+create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
+	returns integer AS $$
+DECLARE
+	counter integer ;
+	rec rooms%rowtype;
+	rid integer;
+BEGIN
+	counter := 0;
+	rid := 0;
+	for rec IN 
+ 	select * from rooms 	
+	LOOP 
+	
+	if counter < how_many and rec.room_type = r_type and  get_room_collide_with_how_many_reservation( rec.ROOM_ID,check_in,check_out) = 0 then
+		INSERT INTO public.room_reserve(room_id, reservation_id) values(rec.room_ID, res_id); 
+			counter := counter + 1;
+			rid := rid + 1;
+	end if;
+	END LOOP;
+	return rid;
+
+END;
+$$ LANGUAGE PLpgSQL;	
