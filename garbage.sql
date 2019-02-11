@@ -14,6 +14,20 @@ create table Room_type_table(
 );
 
 
+create or replace FUNCTION get_room_collide_with_how_many_reservation(r_ID integer, check_in date, check_out date)
+	returns integer AS $$
+DECLARE 
+       ret integer;
+begin 
+	select count(*) into ret
+	from ROOM_RESERVE RM join reservations res 
+	ON(RM.RESERVATION_ID = res.reservation_id )
+	where RM.ROOM_ID = r_ID and ( ( res.checkin_date >= check_in and check_in <= res.checkout_date ) 
+		or ( res.checkout_date >= check_out and check_out <= res.checkout_date ) );
+	return ret;
+
+end;
+$$ LANGUAGE PLpgSQL;
 
 
 -- input = city_name, price range, persons 
