@@ -18,13 +18,14 @@ public class BookingClient extends Application {
 
 
         stage = primaryStage;
-        stage.setResizable(false);
-        stage.initStyle(StageStyle.TRANSPARENT);
+
+        //stage.initStyle(StageStyle.TRANSPARENT);
 
         stage.setResizable(false);
 
         showLoginMenu();
 //        showHotelDescription(1);
+//        showListedRooms(1);
     }
 
     public void showLoginMenu()  throws Exception {
@@ -58,6 +59,8 @@ public class BookingClient extends Application {
 
     public void showHotelCarSelectionMenu() throws Exception {
         FXMLLoader loader  = new FXMLLoader();
+        System.out.println("here");
+
         loader.setLocation(getClass().getResource("HotelCarSelection.fxml") );
         Parent root = loader.load();
 
@@ -88,6 +91,19 @@ public class BookingClient extends Application {
         Parent root = loader.load();
 
         HotelDescriptionController controller = loader.getController();
+        controller.setBookingClient(this , hotelId);
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
+    public void showListedRooms(int hotelId) throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ListedRooms.fxml") );
+        Parent root = loader.load();
+
+        ListedRoomsController controller = loader.getController();
         controller.setBookingClient(this , hotelId);
 
         stage.setScene(new Scene(root) );

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="933.0" prefWidth="1157.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedRoomsController">
+   <children>
+      <AnchorPane prefHeight="113.0" prefWidth="769.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="134.0" fitWidth="725.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@bookingLogoFullName.png" />
+               </image>
+            </ImageView>
+            <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="134.0" prefHeight="802.0" prefWidth="1157.0">
+         <children>
+            <Label fx:id="hotelNameLabel" layoutX="318.0" prefHeight="68.0" prefWidth="523.0" text="Hotel Name" textAlignment="CENTER" textFill="#003680" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="35.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutY="71.0" prefHeight="627.0" prefWidth="1158.0">
+               <children>
+                  <JFXTreeTableView fx:id="treeView" editable="true" prefHeight="627.0" prefWidth="1157.0">
+                     <columns>
+                        <JFXTreeTableColumn fx:id="roomTypeColumn" editable="false" minWidth="239.0" prefWidth="239.0" resizable="false" sortType="DESCENDING" sortable="false" text="Room Type" />
+                        <JFXTreeTableColumn fx:id="capacityColumn" editable="false" minWidth="96.0" prefWidth="161.0" resizable="false" sortType="DESCENDING" sortable="false" text="Capacity" />
+                        <JFXTreeTableColumn fx:id="facilitiesColumn" editable="false" prefWidth="407.0" sortable="false" text="Facilities" />
+                        <JFXTreeTableColumn fx:id="priceColumn" editable="false" prefWidth="183.0" sortable="false" text="Price" />
+                        <JFXTreeTableColumn fx:id="quantityColumn" prefWidth="162.0" text="Select Quantity" />
+                     </columns>
+                  </JFXTreeTableView>
+               </children>
+            </AnchorPane>
+            <JFXButton buttonType="RAISED" layoutX="439.0" layoutY="713.0" onAction="#bookRoomClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Confirm" textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="658.0" layoutY="713.0" onAction="#tableListShow" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Go back" textFill="WHITE">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

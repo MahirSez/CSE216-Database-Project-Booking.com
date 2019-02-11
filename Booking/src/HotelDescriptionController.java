@@ -53,14 +53,18 @@ public class HotelDescriptionController  {
     private JFXTreeTableColumn<ReviewList, String> descriptionColumn;
 
     @FXML
-    private TreeTableColumn<ReviewList, String> ratingColumn;
+    private JFXTreeTableColumn<ReviewList, String> ratingColumn;
 
 
     ObservableList<ReviewList> reviewList;
 
     @FXML
     void bookRoomClicked() {
-
+        try {
+            bookingClient.showListedRooms(hotelID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -183,6 +187,8 @@ public class HotelDescriptionController  {
                 return param.getValue().getValue().ratingString;
             }
         });
+
+
 
     }
 
