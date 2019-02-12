@@ -177,7 +177,7 @@ $$ LANGUAGE PLpgSQL;
 
 
 
-create or replace FUNCTION room_reserve_room_id_insert(res_id integer,h_id integer,r_type text,how_many integer,check_in date, check_out date)
+create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date,h_id integer)
 	returns integer AS $$
 DECLARE
 	counter integer ;
@@ -190,7 +190,7 @@ BEGIN
  	select * from rooms 	
 	LOOP 
 	
-	if counter < how_many and rec.room_type = r_type and  get_room_collide_with_how_many_reservation( rec.ROOM_ID,check_in,check_out) = 0 then
+	if counter < how_many and rec.room_type = r_type and rec.hotel_id = h_id and  get_room_collide_with_how_many_reservation( rec.ROOM_ID,check_in,check_out) = 0 then
 		INSERT INTO public.room_reserve(room_id, reservation_id) values(rec.room_ID, res_id); 
 			counter := counter + 1;
 			rid := rid + 1;
@@ -217,3 +217,11 @@ INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double
 INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
 INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
 INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king');
+
+
+
+---
+create or replace FUNCTION get_reservations_of_a_clien(client_id integer)
+RETURNS TABLE (
+	
+)
