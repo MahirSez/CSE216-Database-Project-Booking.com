@@ -200,3 +200,20 @@ BEGIN
 
 END;
 $$ LANGUAGE PLpgSQL;	
+
+
+---
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'twin');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'economy');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'economy');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'twin');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'twin');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'twin');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'double bed');
+INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king');
