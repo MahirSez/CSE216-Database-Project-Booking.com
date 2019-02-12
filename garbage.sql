@@ -177,7 +177,7 @@ $$ LANGUAGE PLpgSQL;
 
 
 
-create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
+create or replace FUNCTION room_reserve_room_id_insert(res_id integer,h_id integer,r_type text,how_many integer,check_in date, check_out date)
 	returns integer AS $$
 DECLARE
 	counter integer ;
