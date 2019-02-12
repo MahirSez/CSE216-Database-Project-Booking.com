@@ -147,6 +147,36 @@ end;
 $$ LANGUAGE PLpgSQL;
 
 
+
+
+
+
+
+
+create or replace FUNCTION reservation_insert
+(hid integer,checkin date, checkout date,
+	c_id integer,prc integer)
+returns integer AS $$
+
+DECLARE
+	cur_id integer;
+BEGIN
+	INSERT INTO public.reservations
+		(
+		hotel_id, checkin_date, checkout_date, client_id,
+		price)
+	VALUES
+		( hid, checkin, checkout, c_id,
+			prc)
+	returning RESERVATION_ID into cur_id;
+
+return cur_id;
+
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
 create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
 	returns integer AS $$
 DECLARE
