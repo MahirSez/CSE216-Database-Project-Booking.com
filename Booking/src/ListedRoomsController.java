@@ -17,24 +17,30 @@ import javafx.scene.control.cell.ComboBoxTreeTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
+import org.controlsfx.control.Notifications;
 
+import javax.xml.ws.soap.MTOM;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListedRoomsController {
 
     BookingClient bookingClient;
-    int hotelID;
 
 
     ObservableList<ListedRooms> roomList;
+    ObservableList<ListedRooms> selectedRoomList;
     @FXML
     private Label hotelNameLabel;
 
     @FXML
-    private JFXTreeTableView<ListedRooms> treeView;
+    private JFXTreeTableView<ListedRooms> treeView1;
 
     @FXML
     private JFXTreeTableColumn<ListedRooms, String> roomTypeColumn;
@@ -52,13 +58,68 @@ public class ListedRoomsController {
     private JFXTreeTableColumn<ListedRooms, String> quantityColumn;
 
     @FXML
-    void bookRoomClicked() {
+    private JFXTreeTableColumn<ListedRooms, String> quantitySelectionColumn;
+
+    @FXML
+    private JFXTreeTableView<ListedRooms> treeView2;
+
+    @FXML
+    private JFXTreeTableColumn<ListedRooms, String> selectedRoomColumn;
+
+    @FXML
+    private TreeTableColumn<ListedRooms, String> selectedQuantityColumn;
+
+    ObservableList<String> list =   FXCollections.observableArrayList();
+    Map<String , Integer> map = new HashMap<>();
+
+
+
+    @FXML
+    void selectButtonClicked() {
+        TreeItem<ListedRooms> selectedItem ;
+        selectedItem = treeView1.getSelectionModel().getSelectedItem();
+
+        if( selectedItem == null  ) {
+            return;
+        }
+
+        int id = selectedItem.getParent().getChildren().indexOf(selectedItem);
+
+        String roomType = selectedItem.getValue().roomType.getValue();
+        int quantitySelected = Integer.parseInt(selectedItem.getValue().selectedAmount.getValue());
+        int available = Integer.parseInt(selectedItem.getValue().quantityAvailable.getValue());
+        int price = Integer.parseInt(selectedItem.getValue().price.getValue());
+        int capacity = Integer.parseInt(selectedItem.getValue().capacity.getValue());
+        String facilities = selectedItem.getValue().facilities.getValue();
+
+        Integer alreadyExists = map.get(roomType);
+        if( alreadyExists == null) alreadyExists = 0;
+        if( quantitySelected + alreadyExists > available) {
+            Notifications notifications = Notifications.create()
+                    .title("Error")
+                    .text("Selected amount of room exceed capacity")
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(3))
+                    .position(Pos.TOP_RIGHT);
+            notifications.showError();
+        }
+
+        else if (quantitySelected > 0) {
+
+            System.out.println(roomType + " " + quantitySelected);
+            map.put( roomType , alreadyExists + quantitySelected);
+            selectedRoomList.add(new ListedRooms(roomType, price, capacity, facilities, available, quantitySelected));
+        }
 
     }
 
     @FXML
     void homeLinkClicked() {
-
+        try {
+            bookingClient.showHotelCarSelectionMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -70,65 +131,112 @@ public class ListedRoomsController {
     public void showTreeTable() {
 
 
+
+        //treeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         roomList = FXCollections.observableArrayList();
+        selectedRoomList = FXCollections.observableArrayList();
 
         quantityColumn.setEditable(true);
+
         roomTypeColumn = new JFXTreeTableColumn<>("Room type");
-        roomTypeColumn.setPrefWidth(200);
+        roomTypeColumn.setPrefWidth(191);
         roomTypeColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
                 return param.getValue().getValue().roomType;
             }
         });
+        roomTypeColumn.setSortable(false);
 
 
 
         capacityColumn = new JFXTreeTableColumn<>("Capacity");
-        capacityColumn.setPrefWidth(100);
+        capacityColumn.setPrefWidth(143);
         capacityColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
                 return param.getValue().getValue().capacity;
             }
         });
+        capacityColumn.setSortable(false);
 
         facilitiesColumn = new JFXTreeTableColumn<>("Facilities");
-        facilitiesColumn.setPrefWidth(450);
+        facilitiesColumn.setPrefWidth(270);
         facilitiesColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
                 return param.getValue().getValue().facilities;
             }
         });
+        facilitiesColumn.setSortable(false);
 
 
         priceColumn = new JFXTreeTableColumn<>("Price");
-        priceColumn.setPrefWidth(200);
+        priceColumn.setPrefWidth(162);
         priceColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
                 return param.getValue().getValue().price;
             }
         });
+        priceColumn.setSortable(false);
 
-        quantityColumn = new JFXTreeTableColumn<>("Select Quantity");
-        quantityColumn.setPrefWidth(200);
+        quantityColumn = new JFXTreeTableColumn<>("Available Amount");
+        quantityColumn.setPrefWidth(190);
         quantityColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
+                return param.getValue().getValue().quantityAvailable;
+            }
+        });
+        quantitySelectionColumn.setSortable(false);
+
+        quantitySelectionColumn = new JFXTreeTableColumn<>("Select Quantity");
+        quantitySelectionColumn.setPrefWidth(197);
+        quantitySelectionColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
                 return param.getValue().getValue().selectedAmount;
             }
         });
 
-        quantityColumn.setCellFactory(new Callback<TreeTableColumn<ListedRooms,String> ,TreeTableCell<ListedRooms,String> >()  {
+        quantitySelectionColumn.setCellFactory(new Callback<TreeTableColumn<ListedRooms,String> ,TreeTableCell<ListedRooms,String> >()  {
             @Override
             public TreeTableCell<ListedRooms,String> call(TreeTableColumn<ListedRooms , String> param) {
                 return new TextFieldTreeTableCell<>();
             }
         });
 
+        quantitySelectionColumn.setCellFactory(ComboBoxTreeTableCell.forTreeTableColumn(list));
 
+
+        final TreeItem<ListedRooms> root1 = new RecursiveTreeItem<ListedRooms>(roomList, RecursiveTreeObject::getChildren);
+        treeView1.getColumns().setAll(roomTypeColumn , capacityColumn ,facilitiesColumn , priceColumn , quantityColumn , quantitySelectionColumn);
+        treeView1.setRoot(root1);
+        treeView1.setShowRoot(false);
+
+        selectedRoomColumn = new JFXTreeTableColumn<>("Room type");
+        selectedRoomColumn.setPrefWidth(382);
+        selectedRoomColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
+                return param.getValue().getValue().roomType;
+            }
+        });
+
+        selectedQuantityColumn = new JFXTreeTableColumn<>("Selected Quantity");
+        selectedQuantityColumn.setPrefWidth(375);
+        selectedQuantityColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedRooms, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedRooms, String> param) {
+                return param.getValue().getValue().selectedAmount;
+            }
+        });
+
+        final TreeItem<ListedRooms> root2 = new RecursiveTreeItem<ListedRooms>(selectedRoomList, RecursiveTreeObject::getChildren);
+        treeView2.getColumns().setAll(selectedRoomColumn ,selectedQuantityColumn);
+        treeView2.setRoot(root2);
+        treeView2.setShowRoot(false);
 
 
     }
@@ -140,12 +248,12 @@ public class ListedRoomsController {
         try {
             String sql = "select hotel_name from hotel where hotel_id = ?;";
             PreparedStatement statement = dbAdapter.conn.prepareStatement(sql);
-            statement.setInt(1 , hotelID);
+            statement.setInt(1 , bookingClient.hotelID);
             ResultSet resultSet = statement.executeQuery();
 
             if( resultSet.next()) {
                 String name = resultSet.getString(1);
-                System.out.println(name);
+//                System.out.println(name);
                 hotelNameLabel.setText(name);
                 hotelNameLabel.setAlignment(Pos.CENTER);
 
@@ -159,50 +267,44 @@ public class ListedRoomsController {
     }
 
 
-    private void populateTable() {
 
-        final TreeItem<ListedRooms> root = new RecursiveTreeItem<ListedRooms>(roomList, RecursiveTreeObject::getChildren);
-        treeView.getColumns().setAll(roomTypeColumn , capacityColumn ,facilitiesColumn , priceColumn , quantityColumn);
-        treeView.setRoot(root);
-        treeView.setShowRoot(false);
+    @FXML
+    private void confirmClicked() {
+
+
 
     }
     public void executeQuery() {
 
 
 
-            DbAdapter dbAdapter = new DbAdapter();
-            dbAdapter.connect();
+        DbAdapter dbAdapter = new DbAdapter();
+        dbAdapter.connect();
 
-            try {
-                String SQL = "select *  from rooms where hotel_id = ?";
+
+        try {
+                String SQL = "select * from GET_ALL_Candidate_ROOMS_OF_HOTEL(?,?, ?,?,?, ? )";
 
                 PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
-                statement.setInt(1 , hotelID);
+                statement.setInt(1 , bookingClient.hotelID);
+                statement.setInt(2 , Integer.parseInt(bookingClient.priceFrom) );
+                statement.setInt(3 , Integer.parseInt(bookingClient.priceTo) );
+                statement.setDate(4 , Date.valueOf(bookingClient.checkInDate) ) ;
+                statement.setDate(5 , Date.valueOf(bookingClient.getCheckOutDate) ) ;
+                statement.setInt(6 , Integer.parseInt(bookingClient.numberOFPersons));
+
                 ResultSet result = statement.executeQuery();
-                int cnt = 0;
+
                 while( result.next()) {
-                    int room_id = result.getInt(1);
-                    int hotel_id = result.getInt(2);
-                    String room_type = result.getString(3);
-                    int price = result.getInt(4);
-                    String facilities = result.getString(5);
-                    int res_id = result.getInt(6);
-                    int capacity = result.getInt(7);
+
+                    String room_type = result.getString(1);
+                    int price = result.getInt(2);
+                    int capacity = result.getInt(3);
+                    String facilities = result.getString(4);
+                    int quantityAvailable = result.getInt(5);
 
 
-//                    ComboBox<String> comboBox = new ComboBox<>();
-//                    comboBox.getItems().addAll("0" , "1 " , "2");
-//                    System.out.println("here");
-                    cnt++;
-
-                    ObservableList<String> list =   FXCollections.observableArrayList();
-                    for(Integer i = 0 ;i < cnt ; i++ ) {
-                        list.add(i.toString());
-                    }
-                    quantityColumn.setCellFactory(ComboBoxTreeTableCell.forTreeTableColumn(list));
-
-                    roomList.add(new ListedRooms( room_type , capacity , facilities , price , "0" ));
+                    roomList.add(new ListedRooms( room_type , price , capacity , facilities , quantityAvailable ,0 ));
                 }
 
             } catch (SQLException e) {
@@ -215,37 +317,38 @@ public class ListedRoomsController {
 
     }
 
-    public void setBookingClient(BookingClient bookingClient, int hotelId) {
+    public void setBookingClient(BookingClient bookingClient) {
         this.bookingClient = bookingClient;
-        this.hotelID = hotelId;
-        System.out.println(hotelId);
+
+        for(Integer i = 0 ;i < 5 ; i++ ) {
+            list.add(i.toString());
+        }
 
         showHotelName();
         showTreeTable();
         executeQuery();
-        populateTable();
     }
 
     private static final class ListedRooms extends RecursiveTreeObject<ListedRooms> {
         final StringProperty roomType;
+        final StringProperty price;
         final StringProperty capacity;
         final StringProperty facilities;
-        final StringProperty price;
+
         final StringProperty selectedAmount;
-         ComboBox<String> quantity ;
+        final StringProperty quantityAvailable ;
 
 
-        public ListedRooms(String  roomType, Integer capacity, String facilities, Integer price, String quantity) {
+        public ListedRooms(String  roomType, Integer price, Integer capacity, String facilities, Integer quantityAvailable , Integer selectedQuantity) {
 
             this.roomType = new SimpleStringProperty(roomType);
             this.capacity = new SimpleStringProperty(capacity.toString());
             this.facilities = new SimpleStringProperty(facilities);
             this.price = new SimpleStringProperty(price.toString());
             //this.quantity = quantity;
-            this.selectedAmount = new SimpleStringProperty(quantity);
+            this.quantityAvailable = new SimpleStringProperty(quantityAvailable.toString());
+            this.selectedAmount = new SimpleStringProperty(selectedQuantity.toString());
         }
-
-
 
     }
 

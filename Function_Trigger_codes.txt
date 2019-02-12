@@ -380,3 +380,12 @@ AFTER INSERT
 ON PROPERTY
 FOR EACH ROW
 EXECUTE PROCEDURE PROP_INS_HOTEL_INS();
+
+
+select hotel_id 
+from hotel h 
+join property p 
+on (p.property_id = h.hotel_id)
+join city c
+on (p.city_id = c.city_id)
+where h.hotel_name = 'Urban Hotel' and  c.city_name = 'Delhi';

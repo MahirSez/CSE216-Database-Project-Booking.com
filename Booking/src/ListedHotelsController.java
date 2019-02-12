@@ -17,13 +17,11 @@ import sun.reflect.generics.tree.Tree;
 
 import java.net.URL;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 public class ListedHotelsController implements Initializable{
     private BookingClient bookingClient;
-    private String cityName;
-
-
 
 
     @FXML
@@ -115,17 +113,22 @@ public class ListedHotelsController implements Initializable{
         dbAdapter.connect();
 
         try {
-            String SQL = "select * from hotel_search(?)";
+            String SQL = "select * from hotel_search(?, ? , ? , ? , ? , ?);";
 
             PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
-            statement.setString(1 , cityName);
+            statement.setString(1 , bookingClient.cityName);
+            statement.setInt(2 , Integer.parseInt(bookingClient.priceFrom) );
+            statement.setInt(3 , Integer.parseInt(bookingClient.priceTo) );
+            statement.setDate(4 , Date.valueOf(bookingClient.checkInDate) );
+            statement.setDate(5 , Date.valueOf(bookingClient.getCheckOutDate));
+            statement.setInt(6 , Integer.parseInt(bookingClient.numberOFPersons));
             ResultSet result = statement.executeQuery();
             int id =0;
             while( result.next()) {
                 int hotelID = result.getInt(1);
                 String hotelName = result.getString(2);
                 Double hotelRating = result.getDouble(3);
-                //System.out.println(hotelID + " "  + hotelName + " " + hotelRating);
+                System.out.println(hotelID + " "  + hotelName + " " + hotelRating);
                 //System.out.println(id + " " + hotelID + " " + hotelName);
                 map.put(id++ , hotelID);
                 hotelList.add(new ListedHotel(hotelName , hotelRating));
@@ -145,9 +148,8 @@ public class ListedHotelsController implements Initializable{
 
 
 
-    public void setBookingClient(BookingClient bookingClient, String cityName) {
+    public void setBookingClient(BookingClient bookingClient) {
         this.bookingClient = bookingClient;
-        this.cityName = cityName;
 
         executeSQL();
     }

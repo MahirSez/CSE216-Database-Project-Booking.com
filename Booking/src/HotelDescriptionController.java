@@ -1,7 +1,4 @@
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -56,12 +53,17 @@ public class HotelDescriptionController  {
     private JFXTreeTableColumn<ReviewList, String> ratingColumn;
 
 
+    @FXML
+    void addReview() {
+
+    }
+
     ObservableList<ReviewList> reviewList;
 
     @FXML
     void bookRoomClicked() {
         try {
-            bookingClient.showListedRooms(hotelID);
+            bookingClient.showListedRooms();
         } catch (Exception e) {
             e.printStackTrace();
         }

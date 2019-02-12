@@ -5,17 +5,39 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 //Client
 public class BookingClient extends Application {
 
     Stage stage;
-    String cityName;
-    int clientID;
+    String cityName , priceFrom , priceTo  , numberOFPersons ;
+    int clientID , hotelID;
+
+    LocalDate checkInDate , getCheckOutDate;
+
+    /***
+     * Delete this function for fucks sake
+     */
+    void setValues() {
+
+        cityName = "Delhi";
+        priceFrom = "0";
+        priceTo  = "1234567";
+        numberOFPersons = "5";
+        clientID = 11;
+        String str = "";
+        checkInDate =LocalDate.of(2017 , 1 , 2);
+        getCheckOutDate = LocalDate.of(2017 , 1 , 6);
+        hotelID = 1;
+
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-
+        setValues();
 
         stage = primaryStage;
 
@@ -23,7 +45,7 @@ public class BookingClient extends Application {
 
         stage.setResizable(false);
 
-        showLoginMenu();
+        showListedRooms();
 //        showHotelDescription(1);
 //        showListedRooms(1);
     }
@@ -72,13 +94,13 @@ public class BookingClient extends Application {
         stage.centerOnScreen();
         stage.show();
     }
-    public void showListedHotels(String cityName) throws Exception {
+    public void showListedHotels() throws Exception {
         FXMLLoader loader  = new FXMLLoader();
         loader.setLocation(getClass().getResource("ListedHotels.fxml") );
         Parent root = loader.load();
 
         ListedHotelsController controller = loader.getController();
-        controller.setBookingClient(this , cityName);
+        controller.setBookingClient(this );
 
         stage.setScene(new Scene(root) );
 
@@ -98,13 +120,27 @@ public class BookingClient extends Application {
         stage.centerOnScreen();
         stage.show();
     }
-    public void showListedRooms(int hotelId) throws Exception {
+    public void showListedRooms() throws Exception {
         FXMLLoader loader  = new FXMLLoader();
         loader.setLocation(getClass().getResource("ListedRooms.fxml") );
         Parent root = loader.load();
 
         ListedRoomsController controller = loader.getController();
-        controller.setBookingClient(this , hotelId);
+        controller.setBookingClient(this );
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void showReviewScene() throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("reviewScene.fxml") );
+        Parent root = loader.load();
+
+        ReviewSceneController controller = loader.getController();
+        controller.setBookingClient(this );
 
         stage.setScene(new Scene(root) );
 
@@ -115,4 +151,6 @@ public class BookingClient extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

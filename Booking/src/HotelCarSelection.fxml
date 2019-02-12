@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="769.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HotelCarSelectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="769.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HotelCarSelectionController">
    <children>
       <AnchorPane prefHeight="51.0" prefWidth="863.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,26 +21,78 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Text layoutX="99.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City:" wrappingWidth="123.7294921875" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="235.0">
+      <Text layoutX="127.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City Name :" wrappingWidth="123.7294921875" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="190.36376953125">
          <font>
             <Font size="19.0" />
          </font>
       </Text>
-      <Text layoutX="100.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select:" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="305.0">
+      <Text layoutX="127.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select :" wrappingWidth="123.72949631512165" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="260.36376953125">
          <font>
             <Font size="19.0" />
          </font>
       </Text>
-      <JFXTextField fx:id="cityField" layoutX="240.0" layoutY="227.0" prefHeight="26.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="225.0">
+      <JFXTextField fx:id="cityField" layoutX="307.0" layoutY="184.0" prefHeight="38.0" prefWidth="277.0" AnchorPane.leftAnchor="307.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="184.0">
          <font>
             <Font size="19.0" />
          </font>
       </JFXTextField>
-      <JFXButton buttonType="RAISED" layoutX="301.0" layoutY="387.0" onAction="#submitButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Submit" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="302.0" layoutY="604.0" onAction="#submitButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Submit" textFill="WHITE">
          <font>
             <Font size="19.0" />
          </font>
       </JFXButton>
-      <JFXComboBox fx:id="selection" labelFloat="true" layoutX="240.0" layoutY="292.0" onAction="#hotelCarSelection" prefHeight="38.0" prefWidth="276.0" AnchorPane.leftAnchor="240.0" />
+      <JFXComboBox fx:id="selection" labelFloat="true" layoutX="307.0" layoutY="251.0" onAction="#hotelCarSelection" prefHeight="38.0" prefWidth="277.0" AnchorPane.leftAnchor="307.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="251.0" />
+      <Text layoutX="127.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price Range :" wrappingWidth="137.72949631512165" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="330.36376953125">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <JFXTextField fx:id="priceFrom" alignment="CENTER" layoutX="307.0" layoutY="317.0" prefHeight="38.0" prefWidth="104.0" AnchorPane.leftAnchor="307.0" AnchorPane.topAnchor="317.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <Text layoutX="426.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to" wrappingWidth="31.72949631512165" AnchorPane.topAnchor="336.36376953125">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <JFXTextField fx:id="priceTo" alignment="CENTER" layoutX="470.0" layoutY="317.0" prefHeight="38.0" prefWidth="104.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="317.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <Text layoutX="574.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BDT" wrappingWidth="123.72949631512165" AnchorPane.topAnchor="332.36376953125">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="127.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check-in Date : " wrappingWidth="161.72949631512165" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="400.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <Text layoutX="127.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check-out Date : " wrappingWidth="168.72949631512165" AnchorPane.leftAnchor="127.0" AnchorPane.topAnchor="470.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <JFXDatePicker fx:id="checkInDate" editable="false" layoutX="307.0" layoutY="403.0" prefHeight="26.0" prefWidth="169.0" AnchorPane.leftAnchor="307.0" />
+      <JFXDatePicker fx:id="checkOutDate" editable="false" layoutX="307.0" layoutY="469.0" prefHeight="26.0" prefWidth="169.0" AnchorPane.leftAnchor="307.0" />
+      <Text layoutX="127.0" layoutY="554.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Persons : " wrappingWidth="168.72949631512165" AnchorPane.leftAnchor="127.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+      <JFXTextField fx:id="numberOfPersons" alignment="CENTER" layoutX="307.0" layoutY="516.0" prefHeight="38.0" prefWidth="138.0">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton buttonType="RAISED" layoutX="606.0" layoutY="150.0" onAction="#reviewButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Add Review&gt;&gt;" textFill="WHITE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
