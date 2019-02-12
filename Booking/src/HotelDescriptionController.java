@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 
 public class HotelDescriptionController  {
     private BookingClient bookingClient;
-    int hotelID;
 
 
     @FXML
@@ -101,12 +100,11 @@ public class HotelDescriptionController  {
         try {
             String sql = "select hotel_name from hotel where hotel_id = ?;";
             PreparedStatement statement = dbAdapter.conn.prepareStatement(sql);
-            statement.setInt(1 , hotelID);
+            statement.setInt(1 , bookingClient.hotelID);
             ResultSet resultSet = statement.executeQuery();
 
             if( resultSet.next()) {
                 String name = resultSet.getString(1);
-                System.out.println(name);
                 hotelNameLabel.setText(name);
                 hotelNameLabel.setAlignment(Pos.CENTER);
 
@@ -128,12 +126,12 @@ public class HotelDescriptionController  {
                     "\tFROM  HOTEL \n" +
                     "\tWHERE HOTEL_ID = ?;\n";
             PreparedStatement statement = dbAdapter.conn.prepareStatement(sql);
-            statement.setInt(1 , hotelID);
+            statement.setInt(1 , bookingClient.hotelID);
             ResultSet resultSet = statement.executeQuery();
 
             if( resultSet.next()) {
                 String description = resultSet.getString(1);
-                System.out.println(description);
+
                 descriptionArea.setText(description);
                 descriptionArea.setEditable(false);
             }
@@ -144,6 +142,31 @@ public class HotelDescriptionController  {
         }
         dbAdapter.disconnect();
     }
+    @FXML
+    private void reviewButtonClicked() {
+        try {
+            bookingClient.showReviewScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void logOutClicked() {
+        try {
+            bookingClient.showLoginMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void profileButtonClicked() {
+        try {
+            bookingClient.showProfileScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void showTreeTable() {
 
@@ -211,7 +234,7 @@ public class HotelDescriptionController  {
             String SQL = "select * from hotel_review where hotel_id = ?";
 
             PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
-            statement.setInt(1 , hotelID);
+            statement.setInt(1 , bookingClient.hotelID);
             ResultSet result = statement.executeQuery();
             while( result.next()) {
                 int revId = result.getInt(1);
@@ -257,9 +280,8 @@ public class HotelDescriptionController  {
         return name;
     }
 
-    public void setBookingClient(BookingClient bookingClient , int hotelId) {
+    public void setBookingClient(BookingClient bookingClient ) {
         this.bookingClient = bookingClient;
-        this.hotelID = hotelId;
         showHotelName();
         showDescription();
         showTreeTable();

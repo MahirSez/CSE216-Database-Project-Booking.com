@@ -30,35 +30,45 @@
                   <Font name="System Bold" size="35.0" />
                </font>
             </Label>
-            <AnchorPane layoutY="68.0" prefHeight="123.0" prefWidth="1157.0">
+            <AnchorPane layoutY="68.0" prefHeight="235.0" prefWidth="1157.0">
                <children>
-                  <JFXTextArea fx:id="descriptionArea" layoutX="37.0" layoutY="17.0" prefHeight="104.0" prefWidth="1068.0">
+                  <JFXTextArea fx:id="descriptionArea" layoutX="37.0" layoutY="17.0" prefHeight="217.0" prefWidth="1068.0">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </JFXTextArea>
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="191.0" prefHeight="507.0" prefWidth="1158.0">
-               <children>
-                  <JFXTreeTableView fx:id="treeView" prefHeight="507.0" prefWidth="1157.0">
-                     <columns>
-                        <JFXTreeTableColumn fx:id="clientNameColumn" editable="false" minWidth="239.0" prefWidth="329.0" resizable="false" sortType="DESCENDING" sortable="false" text="Name" />
-                        <JFXTreeTableColumn fx:id="reviewDateColumn" editable="false" minWidth="96.0" prefWidth="181.0" resizable="false" sortType="DESCENDING" sortable="false" text="Date" />
-                        <JFXTreeTableColumn fx:id="descriptionColumn" editable="false" prefWidth="517.0" sortable="false" text="Description" />
-                        <JFXTreeTableColumn fx:id="ratingColumn" editable="false" prefWidth="129.0" sortable="false" text="Rating" />
-                     </columns>
-                  </JFXTreeTableView>
-               </children>
-            </AnchorPane>
-            <JFXButton buttonType="RAISED" layoutX="400.0" layoutY="713.0" onAction="#bookRoomClicked" prefHeight="45.0" prefWidth="154.0" style="-fx-background-color: #003680;" text="Book rooms" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="586.0" layoutY="731.0" onAction="#bookRoomClicked" prefHeight="45.0" prefWidth="154.0" style="-fx-background-color: #003680;" text="Book rooms" textFill="WHITE" AnchorPane.leftAnchor="586.0">
                <font>
                   <Font size="19.0" />
                </font>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="658.0" layoutY="713.0" onAction="#tableListShow" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Go back" textFill="WHITE">
+            <JFXTreeTableView fx:id="treeView" layoutX="151.0" layoutY="307.0" prefHeight="411.0" prefWidth="1002.0">
+               <columns>
+                  <JFXTreeTableColumn fx:id="clientNameColumn" editable="false" minWidth="101.0" prefWidth="226.00003051757812" resizable="false" sortType="DESCENDING" sortable="false" text="Name" />
+                  <JFXTreeTableColumn fx:id="reviewDateColumn" editable="false" minWidth="0.0" prefWidth="185.0" resizable="false" sortType="DESCENDING" sortable="false" text="Date" />
+                  <JFXTreeTableColumn fx:id="descriptionColumn" editable="false" prefWidth="315.0" sortable="false" text="Description" />
+                  <JFXTreeTableColumn fx:id="ratingColumn" editable="false" minWidth="0.0" prefWidth="278.0" sortable="false" text="Rating" />
+               </columns>
+            </JFXTreeTableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="15.0" layoutY="298.0" prefHeight="492.0" prefWidth="152.0" style="-fx-background-color: #003680;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <JFXButton buttonType="RAISED" layoutX="5.0" layoutY="64.0" onAction="#reviewButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Add Review" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="9.0">
                <font>
-                  <Font size="19.0" />
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="147.0" onAction="#profileButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Profile" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="235.0" onAction="#logOutClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Log Out" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
                </font>
             </JFXButton>
          </children>

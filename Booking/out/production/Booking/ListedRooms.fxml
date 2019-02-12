@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="933.0" prefWidth="1157.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedRoomsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1157.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedRoomsController">
    <children>
       <AnchorPane prefHeight="113.0" prefWidth="769.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,7 +23,7 @@
             <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="134.0" prefHeight="802.0" prefWidth="1157.0">
+      <AnchorPane layoutY="134.0" prefHeight="866.0" prefWidth="1158.0">
          <children>
             <Label fx:id="hotelNameLabel" layoutX="318.0" prefHeight="45.0" prefWidth="523.0" text="Hotel Name" textAlignment="CENTER" textFill="#003680" wrapText="true">
                <font>
@@ -44,19 +44,14 @@
                   </JFXTreeTableView>
                </children>
             </AnchorPane>
-            <JFXButton buttonType="RAISED" layoutX="441.0" layoutY="743.0" onAction="#confirmClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Confirm" textFill="WHITE" AnchorPane.leftAnchor="441.0">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="656.0" layoutY="744.0" onAction="#tableListShow" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Go back" textFill="WHITE" AnchorPane.rightAnchor="441.0">
+            <JFXButton buttonType="RAISED" layoutX="515.0" layoutY="792.0" onAction="#confirmClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Confirm" textFill="WHITE" AnchorPane.leftAnchor="515.0">
                <font>
                   <Font size="19.0" />
                </font>
             </JFXButton>
             <AnchorPane layoutX="202.0" layoutY="435.0" prefHeight="302.0" prefWidth="758.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
                <children>
-                  <JFXTreeTableView fx:id="treeView2" editable="true" layoutY="1.0" prefHeight="298.0" prefWidth="758.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <JFXTreeTableView fx:id="treeView2" editable="true" layoutY="1.0" prefHeight="340.0" prefWidth="758.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <columns>
                         <JFXTreeTableColumn fx:id="selectedRoomColumn" editable="false" minWidth="0.0" prefWidth="382.0" resizable="false" sortType="DESCENDING" sortable="false" text="Room Type" />
                         <TreeTableColumn fx:id="selectedQuantityColumn" editable="false" prefWidth="375.0" resizable="false" sortable="false" text="Selected Quantity" />
@@ -67,6 +62,25 @@
             <JFXButton buttonType="RAISED" layoutX="521.0" layoutY="388.0" onAction="#selectButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Select" textFill="WHITE">
                <font>
                   <Font size="19.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="15.0" layoutY="298.0" prefHeight="470.0" prefWidth="152.0" style="-fx-background-color: #003680;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <JFXButton buttonType="RAISED" layoutX="5.0" layoutY="64.0" onAction="#reviewButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Add Review" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="9.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="147.0" onAction="#profileButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Profile" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="235.0" onAction="#logOutClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Log Out" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
                </font>
             </JFXButton>
          </children>

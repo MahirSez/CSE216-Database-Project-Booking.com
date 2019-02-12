@@ -172,6 +172,8 @@ BEGIN
 END;
 $$ LANGUAGE PLpgSQL;
 
+
+
 create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
 	returns integer AS $$
 DECLARE
@@ -180,7 +182,7 @@ DECLARE
 	rid integer;
 BEGIN
 	counter := 0;
-	rid := -1;
+	rid := -1;	
 	for rec IN 
  	select ROOM_ID from rooms 	
 	LOOP 
@@ -389,3 +391,48 @@ on (p.property_id = h.hotel_id)
 join city c
 on (p.city_id = c.city_id)
 where h.hotel_name = 'Urban Hotel' and  c.city_name = 'Delhi';
+
+
+create or replace FUNCTION reservation_insert(hid integer,checkin date, checkout date, c_id integer)
+returns integer AS $$
+
+DECLARE
+	cur_id integer;
+BEGIN
+	INSERT INTO reservations
+		(hotel_id, checkin_date, checkout_date, client_id)
+	VALUES
+		( hid, checkin, checkout, c_id)
+	returning RESERVATION_ID into cur_id;
+
+return cur_id;
+
+END;
+$$ LANGUAGE PLpgSQL;
+
+
+
+
+create or replace FUNCTION room_reserve_room_id_insert(res_id integer,r_type text,how_many integer,check_in date, check_out date)
+	returns integer AS $$
+DECLARE
+	counter integer ;
+	rec rooms%rowtype;
+	rid integer;
+BEGIN
+	counter := 0;
+	rid := 0;
+	for rec IN 
+ 	select * from rooms 	
+	LOOP 
+	
+	if counter < how_many and rec.room_type = r_type and  get_room_collide_with_how_many_reservation( rec.ROOM_ID,check_in,check_out) = 0 then
+		INSERT INTO room_reserve(room_id, reservation_id) values(rec.room_ID, res_id); 
+			counter := counter + 1;
+			rid := rid + 1;
+	end if;
+	END LOOP;
+	return rid;
+
+END;
+$$ LANGUAGE PLpgSQL;

@@ -28,8 +28,8 @@ public class BookingClient extends Application {
         numberOFPersons = "5";
         clientID = 11;
         String str = "";
-        checkInDate =LocalDate.of(2017 , 1 , 2);
-        getCheckOutDate = LocalDate.of(2017 , 1 , 6);
+        checkInDate =LocalDate.of(2017 , 2 , 2);
+        getCheckOutDate = LocalDate.of(2017 , 2 , 6);
         hotelID = 1;
 
     }
@@ -37,7 +37,7 @@ public class BookingClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        setValues();
+//        setValues();
 
         stage = primaryStage;
 
@@ -45,9 +45,9 @@ public class BookingClient extends Application {
 
         stage.setResizable(false);
 
-        showListedRooms();
 //        showHotelDescription(1);
 //        showListedRooms(1);
+        showLoginMenu();
     }
 
     public void showLoginMenu()  throws Exception {
@@ -81,7 +81,6 @@ public class BookingClient extends Application {
 
     public void showHotelCarSelectionMenu() throws Exception {
         FXMLLoader loader  = new FXMLLoader();
-        System.out.println("here");
 
         loader.setLocation(getClass().getResource("HotelCarSelection.fxml") );
         Parent root = loader.load();
@@ -107,13 +106,13 @@ public class BookingClient extends Application {
         stage.centerOnScreen();
         stage.show();
     }
-    public void showHotelDescription(int hotelId) throws Exception {
+    public void showHotelDescription() throws Exception {
         FXMLLoader loader  = new FXMLLoader();
         loader.setLocation(getClass().getResource("hotelDescription.fxml") );
         Parent root = loader.load();
 
         HotelDescriptionController controller = loader.getController();
-        controller.setBookingClient(this , hotelId);
+        controller.setBookingClient(this);
 
         stage.setScene(new Scene(root) );
 
@@ -140,6 +139,20 @@ public class BookingClient extends Application {
         Parent root = loader.load();
 
         ReviewSceneController controller = loader.getController();
+        controller.setBookingClient(this );
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void showProfileScene() throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ClientProfile.fxml") );
+        Parent root = loader.load();
+
+        ClientProfileController controller = loader.getController();
         controller.setBookingClient(this );
 
         stage.setScene(new Scene(root) );

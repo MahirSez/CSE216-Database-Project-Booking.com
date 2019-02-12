@@ -38,6 +38,30 @@ public class ListedHotelsController implements Initializable{
 
 
 
+    @FXML
+    private void reviewButtonClicked() {
+        try {
+            bookingClient.showReviewScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void logOutClicked() {
+        try {
+            bookingClient.showLoginMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void profileButtonClicked() {
+        try {
+            bookingClient.showProfileScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML
@@ -57,11 +81,11 @@ public class ListedHotelsController implements Initializable{
         }
 
         int id = selectedItem.getParent().getChildren().indexOf(selectedItem);
-        System.out.println(id +" " + map.get(id));
+        bookingClient.hotelID = map.get(id);
 
 
         try {
-            bookingClient.showHotelDescription(map.get(id));
+            bookingClient.showHotelDescription();
         } catch (Exception e) {
             e.printStackTrace();
         }

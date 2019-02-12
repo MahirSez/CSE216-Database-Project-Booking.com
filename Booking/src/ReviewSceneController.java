@@ -41,6 +41,15 @@ public class ReviewSceneController {
         hotelRating  = (String) ratingSelection.getValue();
     }
 
+    @FXML
+    void homeLinkClicked() {
+        try {
+            bookingClient.showHotelCarSelectionMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     ObservableList<String> propertyList = FXCollections
             .observableArrayList("5", "4" , "3" , "2" , "1");
 
@@ -90,6 +99,7 @@ public class ReviewSceneController {
                     .position(Pos.TOP_RIGHT);
             notifications.showError();
             dbAdapter.disconnect();
+            return;
         }
 
         else {

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1160.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientProfileController">
+   <children>
+      <AnchorPane layoutY="134.0" prefHeight="802.0" prefWidth="1157.0">
+         <children>
+            <JFXButton buttonType="RAISED" layoutX="521.0" layoutY="734.0" onAction="#backButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Go back" textFill="WHITE" AnchorPane.leftAnchor="521.0" AnchorPane.rightAnchor="521.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </JFXButton>
+            <AnchorPane layoutX="202.0" layoutY="407.0" prefHeight="282.0" prefWidth="757.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+               <children>
+                  <JFXTreeTableView fx:id="treeView" editable="true" prefHeight="312.0" prefWidth="757.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <columns>
+                        <JFXTreeTableColumn fx:id="hotelNameColumn" editable="false" minWidth="0.0" prefWidth="235.0" resizable="false" sortType="DESCENDING" sortable="false" text="Hotel Name" />
+                        <JFXTreeTableColumn fx:id="checkInDateColumn" editable="false" minWidth="200.0" prefWidth="200.0" resizable="false" sortable="false" text="Check-In Date" />
+                        <JFXTreeTableColumn fx:id="checkOutDateColumn" minWidth="200.0" prefWidth="200.0" text="Check-out Date" />
+                        <JFXTreeTableColumn fx:id="priceColumn" prefWidth="120.0" text="Price" />
+                     </columns>
+                  </JFXTreeTableView>
+               </children>
+            </AnchorPane>
+            <Label layoutX="459.0" layoutY="24.0" prefHeight="45.0" prefWidth="239.0" text="User Profile" textAlignment="CENTER" textFill="#003680" wrapText="true" AnchorPane.leftAnchor="459.0" AnchorPane.rightAnchor="459.0">
+               <font>
+                  <Font name="System Bold" size="35.0" />
+               </font>
+            </Label>
+            <Text layoutX="194.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="123.7294921875" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="115.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text layoutX="200.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="e-mail :" wrappingWidth="123.7294921875" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="175.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text layoutX="200.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number : " wrappingWidth="173.7294921875" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="235.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text layoutX="200.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nationality : " wrappingWidth="140.7294921875" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="295.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="userName" layoutX="376.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="335.7294921875" AnchorPane.leftAnchor="375.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="userMail" layoutX="377.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="288.7294921875" AnchorPane.leftAnchor="375.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="userPhoneNumber" layoutX="373.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="260.7294921875" AnchorPane.leftAnchor="375.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="userNationality" layoutX="377.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="254.7294921875" AnchorPane.leftAnchor="375.0">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Label layoutX="513.0" layoutY="356.0" prefHeight="45.0" prefWidth="154.0" text="History" textAlignment="CENTER" textFill="#003680" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="113.0" prefWidth="769.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="134.0" fitWidth="725.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@bookingLogoFullName.png" />
+               </image>
+            </ImageView>
+            <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

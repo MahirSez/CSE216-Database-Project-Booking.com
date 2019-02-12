@@ -59,6 +59,23 @@ public class HotelCarSelectionController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void logOutClicked() {
+        try {
+            bookingClient.showLoginMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void profileButtonClicked() {
+        try {
+            bookingClient.showProfileScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

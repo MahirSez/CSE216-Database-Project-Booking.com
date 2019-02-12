@@ -30,7 +30,7 @@ public class DbAdapter {
             conn = DriverManager.getConnection(jdbUrl, username, password);
 
             //print success
-            System.out.println("Database Connection Established");
+//            System.out.println("Database Connection Established");
 
         } catch (SQLException e) {
 
