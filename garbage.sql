@@ -220,8 +220,38 @@ INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king')
 
 
 
+
+
+create or replace FUNCTION get_hotel_id(h_id integer)
+RETURNS text AS $$
+DECLARE 
+	name text;
+BEGIN
+	select hotel_name into name 
+	from hotel 
+	where hotel_id = h_id;
+END;
+$$ LANGUAGE PLpgSQL;
+
 ---
-create or replace FUNCTION get_reservations_of_a_clien(client_id integer)
-RETURNS TABLE (
-	
-)
+create or replace FUNCTION get_reservations_of_a_client(c_id integer)
+RETURNS TABLE
+(
+	checkin_date date,
+	checkout_date date,
+	hotel_name text,
+	total_cost integer
+) AS $$
+DECLARE
+
+BEGIN
+	RETURN QUERY
+	select res.checkin_date, res.checkout_date, get_hotel_name(res.hotel_id), CAST (SUM(RTT.price) AS integer)
+	from reservations res join room_reserve RR ON(res.reservation_id = RR.reservation_id)
+		join rooms R ON(RR.room_id = R.room_id)
+		join room_type_table RTT ON(RTT.room_type = R.room_type)
+	where res.client_id = c_id
+	GROUP BY res.reservation_id, res.checkin_date, res.checkout_date;
+
+END;
+$$ LANGUAGE PLpgSQL;
