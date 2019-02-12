@@ -53,6 +53,33 @@ public class ClientProfileController implements Initializable {
 
     private ObservableList<History> historyList;
 
+    @FXML
+    private void reviewButtonClicked() {
+        try {
+            bookingClient.showReviewScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void logOutClicked() {
+        try {
+            bookingClient.showLoginMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void profileButtonClicked() {
+        try {
+            bookingClient.showProfileScene();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         historyList = FXCollections.observableArrayList();

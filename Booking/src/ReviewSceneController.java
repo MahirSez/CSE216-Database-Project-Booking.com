@@ -39,6 +39,7 @@ public class ReviewSceneController {
     @FXML
     void ratingSelected() {
         hotelRating  = (String) ratingSelection.getValue();
+
     }
 
     @FXML
@@ -55,12 +56,14 @@ public class ReviewSceneController {
 
     @FXML
     void submitButtonClicked() {
+        if( hotelRating == null) return;
 
         String hotelName = hotelNameField.getText();
         String cityName = cityNameField.getText();
         String reviewDescription = reviewArea.getText();
         Double rating  = Double.parseDouble(hotelRating);
-        int hotelId = -1;
+        if( hotelName.equals("") || cityName.equals("") ) return;
+        Integer hotelId = 0;
 
 
         DbAdapter dbAdapter = new DbAdapter();
@@ -83,14 +86,16 @@ public class ReviewSceneController {
             if( resultSet.next()) {
                 hotelId = resultSet.getInt(1);
             }
+            else hotelId = -1;
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         dbAdapter.disconnect();
+//        System.out.println("wtf " +hotelId);
 
         System.out.println(hotelId + " " + rating );
-        if( hotelId == -1) {
+        if( hotelId !=-1) {
             Notifications notifications = Notifications.create()
                     .title("Invalid Operation")
                     .text("No Hotel Found")

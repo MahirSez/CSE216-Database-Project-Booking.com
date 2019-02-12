@@ -160,6 +160,19 @@ public class BookingClient extends Application {
         stage.centerOnScreen();
         stage.show();
     }
+    public void showCarList() throws Exception {
+        FXMLLoader loader  = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ListedCars.fxml") );
+        Parent root = loader.load();
+
+        ListedCarsController controller = loader.getController();
+        controller.setBookingClient(this );
+
+        stage.setScene(new Scene(root) );
+
+        stage.centerOnScreen();
+        stage.show();
+    }
 
     public static void main(String[] args) {
         launch(args);

@@ -119,7 +119,6 @@ public class ListedHotelsController implements Initializable{
         });
         hotelRatingColumn.setSortable(false);
 
-
     }
 
     private void populateTable() {

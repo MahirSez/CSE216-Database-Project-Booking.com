@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="920.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ListedCarsController">
+   <children>
+      <AnchorPane prefHeight="113.0" prefWidth="769.0" style="-fx-background-color: #003680;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="134.0" fitWidth="725.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@bookingLogoFullName.png" />
+               </image>
+            </ImageView>
+            <Hyperlink layoutX="2.0" layoutY="-6.0" onAction="#homeLinkClicked" prefHeight="134.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <JFXButton buttonType="RAISED" layoutX="471.0" layoutY="686.0" onAction="#SelectButtonClicked" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #003680;" text="Confirm" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
+      <AnchorPane layoutX="151.0" layoutY="133.0" prefHeight="549.0" prefWidth="771.0" AnchorPane.bottomAnchor="75.0" AnchorPane.topAnchor="134.0">
+         <children>
+            <JFXTreeTableView fx:id="treeView" layoutX="88.0" layoutY="4.0" prefHeight="529.0" prefWidth="730.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columns>
+                  <JFXTreeTableColumn fx:id="carNameColumn" editable="false" minWidth="243.0" prefWidth="332.0" resizable="false" sortType="DESCENDING" sortable="false" text="Car Rental Company Name" />
+                  <JFXTreeTableColumn fx:id="carRatingColumn" editable="false" minWidth="167.0" prefWidth="213.0" resizable="false" sortType="DESCENDING" sortable="false" text="Rating" />
+                  <JFXTreeTableColumn fx:id="carPriceColumn" prefWidth="225.0" text="Price" />
+               </columns>
+            </JFXTreeTableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="5.0" layoutY="288.0" prefHeight="492.0" prefWidth="152.0" style="-fx-background-color: #003680;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <JFXButton buttonType="RAISED" layoutX="5.0" layoutY="64.0" onAction="#reviewButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Add Review" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="9.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="147.0" onAction="#profileButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Profile" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="8.0" layoutY="235.0" onAction="#logOutClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Log Out" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

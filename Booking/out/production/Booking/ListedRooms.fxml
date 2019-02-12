@@ -66,7 +66,7 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="15.0" layoutY="298.0" prefHeight="470.0" prefWidth="152.0" style="-fx-background-color: #003680;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <AnchorPane layoutX="15.0" layoutY="298.0" prefHeight="478.0" prefWidth="152.0" style="-fx-background-color: #003680;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <JFXButton buttonType="RAISED" layoutX="5.0" layoutY="64.0" onAction="#reviewButtonClicked" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: #003680;" text="Add Review" textFill="WHITE" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="9.0">
                <font>

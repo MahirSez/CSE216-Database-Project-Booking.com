@@ -81,34 +81,37 @@ public class HotelCarSelectionController {
 
     @FXML
     private  void submitButtonClicked() {
+        bookingClient.cityName = cityField.getText();
+        bookingClient.priceFrom = priceFrom.getText();
+        bookingClient.priceTo = priceTo.getText();
+        bookingClient.numberOFPersons = numberOfPersons.getText();
+        bookingClient.checkInDate = checkInDate.getValue();
+        bookingClient.getCheckOutDate = checkOutDate.getValue();
+
+//
+//                System.out.println("Name : " + bookingClient.cityName);
+//                System.out.println("Price From : " + bookingClient.priceFrom);
+//                System.out.println("Price To : " + bookingClient.priceTo);
+//                System.out.println("numberOFPersons  : " + bookingClient.numberOFPersons);
+//                System.out.println("checkInDate  : " + bookingClient.checkInDate);
+//                System.out.println("getCheckOutDate  : " + bookingClient.getCheckOutDate);
+
+
 
         if( typeOfProperty.equals("Hotel")) {
             try {
-                bookingClient.cityName = cityField.getText();
-                bookingClient.priceFrom = priceFrom.getText();
-                bookingClient.priceTo = priceTo.getText();
-                bookingClient.numberOFPersons = numberOfPersons.getText();
-                bookingClient.checkInDate = checkInDate.getValue();
-                bookingClient.getCheckOutDate = checkOutDate.getValue();
-
-
-                System.out.println("Name : " + bookingClient.cityName);
-                System.out.println("Price From : " + bookingClient.priceFrom);
-                System.out.println("Price To : " + bookingClient.priceTo);
-                System.out.println("numberOFPersons  : " + bookingClient.numberOFPersons);
-                System.out.println("checkInDate  : " + bookingClient.checkInDate);
-                System.out.println("getCheckOutDate  : " + bookingClient.getCheckOutDate);
-
-
                 bookingClient.showListedHotels();
-
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        else {
-            System.out.println("Still Not Handled");
+        else if( typeOfProperty.equals("Car Rental")){
+            try {
+                bookingClient.showCarList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

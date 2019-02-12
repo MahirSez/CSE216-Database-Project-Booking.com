@@ -77,8 +77,8 @@
             <Font size="19.0" />
          </font>
       </Text>
-      <JFXDatePicker fx:id="checkInDate" editable="false" layoutX="486.0" layoutY="450.0" prefHeight="26.0" prefWidth="169.0" />
-      <JFXDatePicker fx:id="checkOutDate" editable="false" layoutX="486.0" layoutY="516.0" prefHeight="26.0" prefWidth="169.0" />
+      <JFXDatePicker fx:id="checkInDate" defaultColor="#003680" editable="false" layoutX="486.0" layoutY="450.0" prefHeight="26.0" prefWidth="169.0" />
+      <JFXDatePicker fx:id="checkOutDate" defaultColor="#003680" editable="false" layoutX="486.0" layoutY="516.0" prefHeight="26.0" prefWidth="169.0" />
       <Text layoutX="306.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Persons : " wrappingWidth="168.72949631512165">
          <font>
             <Font size="19.0" />
