@@ -222,7 +222,7 @@ INSERT INTO public.rooms(room_id, hotel_id, room_type) VALUES(DEFAULT, 3,'king')
 
 
 
-create or replace FUNCTION get_hotel_id(h_id integer)
+create or replace FUNCTION get_hotel_name(h_id integer)
 RETURNS text AS $$
 DECLARE 
 	name text;
@@ -230,6 +230,7 @@ BEGIN
 	select hotel_name into name 
 	from hotel 
 	where hotel_id = h_id;
+	return name;
 END;
 $$ LANGUAGE PLpgSQL;
 
