@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXTreeTableColumn?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,9 +30,8 @@
          <children>
             <JFXTreeTableView fx:id="treeView" layoutX="88.0" layoutY="4.0" prefHeight="529.0" prefWidth="730.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
-                  <JFXTreeTableColumn fx:id="carNameColumn" editable="false" minWidth="243.0" prefWidth="332.0" resizable="false" sortType="DESCENDING" sortable="false" text="Car Rental Company Name" />
-                  <JFXTreeTableColumn fx:id="carRatingColumn" editable="false" minWidth="167.0" prefWidth="213.0" resizable="false" sortType="DESCENDING" sortable="false" text="Rating" />
-                  <JFXTreeTableColumn fx:id="carPriceColumn" prefWidth="225.0" text="Price" />
+                  <JFXTreeTableColumn fx:id="carNameColumn" editable="false" minWidth="243.0" prefWidth="421.0" resizable="false" sortType="DESCENDING" sortable="false" text="Car Rental Company Name" />
+                  <JFXTreeTableColumn fx:id="carRatingColumn" editable="false" minWidth="167.0" prefWidth="349.0" resizable="false" sortType="DESCENDING" sortable="false" text="Rating" />
                </columns>
             </JFXTreeTableView>
          </children>

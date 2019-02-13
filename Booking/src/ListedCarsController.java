@@ -9,9 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.util.Callback;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -33,16 +36,26 @@ public class ListedCarsController implements Initializable{
     @FXML
     private JFXTreeTableColumn<ListedCars,String> carRatingColumn;
 
-    @FXML
-    private JFXTreeTableColumn<ListedCars,String> carPriceColumn;
+
 
     @FXML
     void SelectButtonClicked() {
+
+        Notifications notifications = Notifications.create()
+                .title("Confirmation!")
+                .text("Reservation Complete")
+                .graphic(null)
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.TOP_CENTER);
+        notifications.showConfirm();
+
         try {
             bookingClient.showHotelCarSelectionMenu();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     public void setBookingClient(BookingClient bookingClient) {
@@ -66,20 +79,20 @@ public class ListedCarsController implements Initializable{
         dbAdapter.connect();
 
         try {
-            String SQL = "select * from car_rental_company_search(?)";
+            String SQL = "select * from get_car_rental_of_a_city(?)";
             PreparedStatement statement = dbAdapter.conn.prepareStatement(SQL);
             statement.setString(1 , bookingClient.cityName);
             ResultSet result = statement.executeQuery();
             int id =0;
             while( result.next()) {
-                int companyID = result.getInt(1);
-                String companyName = result.getString(2);
-                Double companyRating = result.getDouble(3);
-                int price = result.getInt(4);
+
+                String companyName = result.getString(1);
+                Double companyRating = result.getDouble(2);
+
 
                 //System.out.println(id + " " + hotelID + " " + hotelName);
 
-                carList.add(new ListedCars(companyName , companyRating , price));
+                carList.add(new ListedCars(companyName , companyRating ));
             }
 
         } catch (Exception e) {
@@ -94,7 +107,7 @@ public class ListedCarsController implements Initializable{
         carList = FXCollections.observableArrayList();
 
         carNameColumn = new JFXTreeTableColumn<>("Car Rental Company Name");
-        carNameColumn.setPrefWidth(350);
+        carNameColumn.setPrefWidth(500);
         carNameColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedCars, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedCars, String> param) {
@@ -106,7 +119,7 @@ public class ListedCarsController implements Initializable{
 
 
         carRatingColumn = new JFXTreeTableColumn<>("Rating");
-        carRatingColumn.setPrefWidth(400);
+        carRatingColumn.setPrefWidth(270);
         carRatingColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedCars, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedCars, String> param) {
@@ -116,19 +129,9 @@ public class ListedCarsController implements Initializable{
         carRatingColumn.setSortable(false);
 
 
-        carPriceColumn = new JFXTreeTableColumn<>("Price");
-        carPriceColumn.setPrefWidth(400);
-        carPriceColumn.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<ListedCars, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<ListedCars, String> param) {
-                return param.getValue().getValue().price;
-            }
-        });
-        carPriceColumn.setSortable(false);
-
 
         final TreeItem<ListedCars> root = new RecursiveTreeItem<ListedCars>(carList, RecursiveTreeObject::getChildren);
-        treeView.getColumns().setAll(carNameColumn , carRatingColumn , carPriceColumn);
+        treeView.getColumns().setAll(carNameColumn , carRatingColumn  );
         treeView.setRoot(root);
         treeView.setShowRoot(false);
 
@@ -164,15 +167,14 @@ public class ListedCarsController implements Initializable{
     private static final class ListedCars extends RecursiveTreeObject<ListedCars> {
         final StringProperty hotelName;
         final StringProperty rating;
-        final StringProperty price;
 
 
 
-        public ListedCars(String hotelName, Double rating, Integer price) {
+
+        public ListedCars(String hotelName, Double rating) {
 
             this.hotelName = new SimpleStringProperty(hotelName);
             this.rating = new SimpleStringProperty(rating.toString());
-            this.price = new SimpleStringProperty(price.toString());
         }
     }
 
