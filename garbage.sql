@@ -275,3 +275,34 @@ BEGIN
 	ORDER BY c.rating desc; 
 END;
 $$ LANGUAGE PLpgSQL;
+
+
+---
+CREATE OR REPLACE FUNCTION PROP_INS_HOTEL_INS()
+	RETURNS TRIGGER AS $$
+BEGIN
+
+	IF NEW.PROPERTY_TYPE = 'hotel' THEN
+	INSERT INTO hotel
+		(
+		hotel_id, hotel_name, description, rating)
+	VALUES
+		(NEW.PROPERTY_ID, ?, ?, ?);
+
+	ELSEIF NEW.PROPERTY_TYPE = 'car_rental' THEN
+	INSERT INTO public.car_rental_company
+		(
+		company_id)
+	VALUES
+		(NEW.PROPERTY_ID);
+END IF;
+     RETURN NEW;
+END
+$$ LANGUAGE PLpgSQL;
+
+
+insert into property(owner_id, city_id,property_type) values(1,3,'car_rental');
+insert into property(owner_id, city_id,property_type) values(1, 3,'car rental');
+
+insert into car_rental_company(company_name , rating ) values('xyz', 4.5);
+insert into car_rental_company(company_name , rating ) values('alamor rent A car', 4.2);
