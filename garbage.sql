@@ -256,3 +256,22 @@ BEGIN
 
 END;
 $$ LANGUAGE PLpgSQL;
+
+
+
+create or replace FUNCTION get_car_rental_of_a_city(cityName text)
+returns TABLE (
+	companyName text,
+	rating integer
+) AS $$
+DECLARE 
+	c_id integer;
+BEGIN
+	RETURN query 
+	c_id := get_city_id(cityName);
+	select c.company_name, c.rating 
+	from car_rental_company c join property p ON(p.property_id = c.company_id)
+	where p.city_id = c_id ;
+	ORDER BY c.rating desc; 
+END;
+$$ LANGUAGE PLpgSQL;
